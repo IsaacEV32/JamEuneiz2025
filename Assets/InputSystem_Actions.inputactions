@@ -23,6 +23,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChoresController",
+                    "type": "Value",
+                    "id": "d0de57ff-45d1-4e59-92d0-4e23918eadac",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -39,23 +48,23 @@
                 },
                 {
                     "name": "",
-                    "id": "920d9854-7bbf-40dd-8238-68bb8ee79c7d",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad;Touch",
-                    "action": "PlayerController",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2fabb0d6-9b31-4ce2-a71d-1414cb9263ca",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad;Touch",
                     "action": "Button A",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "73e88378-e344-47ab-a457-f77ea900dc4a",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad;Touch",
+                    "action": "ChoresController",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
