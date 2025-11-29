@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
 
     [Header ("Panel de resultado")]
 
-    public GameObject panelResultado;
+    public GameObject GameOver;
+    public GameObject Win;
     public TextMeshProUGUI textoResultado;
 
 
@@ -33,9 +34,10 @@ public class GameManager : MonoBehaviour
 
         
 
-        if (panelResultado != null) 
+        if (GameOver != null || Win != null) 
         {
-            panelResultado.SetActive(false);
+            GameOver.SetActive(false);
+            Win.SetActive(false);
             ActualizarUI();
         }
     }
@@ -91,8 +93,7 @@ public class GameManager : MonoBehaviour
         if(juegoTerminado) return;
         juegoTerminado = true;
 
-        panelResultado.SetActive(true);
-        textoResultado.text = "!Bruh te ha explotado la cabeza!";
+        GameOver.SetActive(true);
         Time.timeScale = 0f;
     }
 
@@ -100,8 +101,7 @@ public class GameManager : MonoBehaviour
     {
         if(juegoTerminado) return;
         juegoTerminado = true;
-        panelResultado.SetActive(true);
-        textoResultado.text = "¡Has logrado desconectarte a tiempo!";
+        Win.SetActive(true);
         Time.timeScale = 0f;
     }
 
