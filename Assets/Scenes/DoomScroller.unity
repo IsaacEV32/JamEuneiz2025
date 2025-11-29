@@ -2043,6 +2043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1782c6149b32be24fbd1e8b543ddbcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ansiedad: {fileID: 1519277346}
   felicidad: {fileID: 0}
   panelResultado: {fileID: 886592787}
   textoResultado: {fileID: 1992896024}
@@ -2076,7 +2077,7 @@ MonoBehaviour:
   panelArea: {fileID: 618326254}
   trapo: {fileID: 686172844}
   manchas: []
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 554954604}
   velocidadTrapo: 600
   radioLimpieza: 60
   velocidadLimpieza: 1.5
@@ -4175,7 +4176,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 40
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

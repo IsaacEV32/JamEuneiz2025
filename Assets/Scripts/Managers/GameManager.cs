@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ansiedad.value = Mathf.Clamp(ansiedad.value, 0, 99);
         ////if(juegoTerminado) return;
         //tiempoRestante -= Time.deltaTime;
 
