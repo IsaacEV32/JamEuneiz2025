@@ -16,7 +16,6 @@ public class Scroll_Control : MonoBehaviour
     {
         scrollController = InputSystem.actions.FindAction("PlayerController");
         barraFelicidad = gameObject.GetComponent<Slider>();
-        post = FindFirstObjectByType<Posts>();
     }
 
     // Update is called once per frame
@@ -53,6 +52,10 @@ public class Scroll_Control : MonoBehaviour
             }
            
         }
+    }
+    public void GetThisPost(Posts postActual)
+    {
+        post = postActual;
     }
     IEnumerator DelayOfGrowing()
     {
