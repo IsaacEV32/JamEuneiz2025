@@ -7,8 +7,8 @@ using System.Security.Cryptography;
 public class GameManager : MonoBehaviour
 {
     [Header("Stats")]
-    //public float ansiedad = 50f;
-    //public float felicidad = 50;
+    //public Slider ansiedad;
+    public Slider felicidad;
 
     private float tiempoRestante;
     private bool juegoTerminado = false;
@@ -37,6 +37,10 @@ public class GameManager : MonoBehaviour
             ActualizarUI();
         }
     }
+    public void GetBarraFelicidad(Slider b)
+    {
+        felicidad = b;
+    }
 
     // Update is called once per frame
     void Update()
@@ -49,28 +53,17 @@ public class GameManager : MonoBehaviour
         //    tiempoRestante = 0f;
         //    Victoria();
         //}
-        ////ComprobarDerrota();
+        ComprobarDerrota();
         //ActualizarUI();
     }
 
-    //public void ModificarAnsiedad (float delta) 
-    //{
-        
-    //    ansiedad = Mathf.Clamp(ansiedad + delta, 0f, 100f);
-    //}
-
-    //public void ModificarFelicidad (float delta) 
-    //{
-    //    felicidad = Mathf.Clamp(felicidad + delta, 0f, 100f);
-    //}
-
-    //void ComprobarDerrota() 
-    //{
-    //    if (ansiedad <= 0f || felicidad <= 0f) 
-    //    {
-    //        Derrota();
-    //    }
-    //}
+    void ComprobarDerrota()
+    {
+        if (/*ansiedad.value <= 0f ||*/ felicidad.value <= 0f)
+        {
+            Derrota();
+        }
+    }
     void ActualizarUI() 
     {
         int minutos = Mathf.FloorToInt(tiempoRestante / 60f);

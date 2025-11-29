@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MinijuegoPerro : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class MinijuegoPerro : MonoBehaviour
     public RectTransform pelota;
     public RectTransform perro;
     public GameManager gameManager;
+
+    InputAction throwBall;
 
     [Header("Parámetros")]
     public float velocidadPelota = 600f;
@@ -19,6 +22,8 @@ public class MinijuegoPerro : MonoBehaviour
     private Vector2 posInicialPerro;
     private Vector2 velocidadPelotaActual;
     private int atrapadas = 0;
+
+    bool waitForBall = true;
 
     private enum Estado
     {
@@ -37,6 +42,7 @@ public class MinijuegoPerro : MonoBehaviour
         posInicialPelota = pelota.anchoredPosition;
         posInicialPerro = perro.anchoredPosition;
         estadoActual = Estado.EsperandoLanzar;
+        throwBall = InputSystem.actions.FindAction("Button A");
     }
 
     void Update()
@@ -67,8 +73,9 @@ public class MinijuegoPerro : MonoBehaviour
         pelota.anchoredPosition = posInicialPelota;
 
         
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (throwBall.IsPressed() && waitForBall)
         {
+            waitForBall = false;
             LanzarPelota();
         }
     }
@@ -99,6 +106,9 @@ public class MinijuegoPerro : MonoBehaviour
 
             if (atrapadas >= atrapadasNecesarias)
             {
+                perro.anchoredPosition = posInicialPerro;
+                pelota.anchoredPosition = posInicialPelota;
+                estadoActual = Estado.EsperandoLanzar;
                 CompletarMinijuego();
             }
             else
@@ -109,6 +119,8 @@ public class MinijuegoPerro : MonoBehaviour
                 estadoActual = Estado.EsperandoLanzar;
             }
         }
+        waitForBall = true;
+
     }
 
     

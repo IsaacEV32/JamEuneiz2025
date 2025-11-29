@@ -14,8 +14,9 @@ public class Posts : MonoBehaviour
     void Start()
     {
         scrollControl.GetThisPost(this);
-        numRandom = Random.value % 1;
-        Debug.Log(numRandom);
+        numRandom = Random.value;
+        float roundedValue = Mathf.Round(numRandom * 10f) / 10f;
+        Debug.Log(roundedValue);
         if (numRandom <= 0.5f)
         {
             this.posts = TipoPosts.Divertido;
@@ -36,13 +37,14 @@ public class Posts : MonoBehaviour
     }
     internal void ChangeTipe()
     {
-        numRandom = Random.value % 1;
-        Debug.Log(numRandom);
-        if (numRandom <= 0.5f)
+        numRandom = Random.value;
+        float roundedValue = Mathf.Round(numRandom * 10f) / 10f;
+        Debug.Log(roundedValue);
+        if (roundedValue <= 0.5f)
         {
             this.posts = TipoPosts.Divertido;
         }
-        else if (numRandom > 0.5f)
+        else if (roundedValue > 0.5f)
         {
 
             this.posts = TipoPosts.Depresivo;

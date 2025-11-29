@@ -546,7 +546,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1466980518}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -869,6 +869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barraFelicidad: {fileID: 195425760}
   chronometer: 0
+  gameManager: {fileID: 554954604}
 --- !u!1 &217615506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2042,6 +2043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1782c6149b32be24fbd1e8b543ddbcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  felicidad: {fileID: 0}
   panelResultado: {fileID: 886592787}
   textoResultado: {fileID: 1992896024}
 --- !u!4 &554954605

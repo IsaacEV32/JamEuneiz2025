@@ -18,13 +18,20 @@ public class Scroll_Control : MonoBehaviour
     Posts post;
 
     public float chronometer = 0f;
+
+    [SerializeField] GameManager gameManager;
     // Se encuentra el mapa de acciones de PlayerController Y para obtener la barra de felicidad
     void Start()
     {
         scrollController = InputSystem.actions.FindAction("PlayerController");
         barraFelicidad = gameObject.GetComponent<Slider>();
+        gameManager.GetBarraFelicidad(barraFelicidad);
     }
-
+    //Pilla la referencia del post
+    public void GetThisPost(Posts postActual)
+    {
+        post = postActual;
+    }
 
     void Update()
     {
@@ -74,11 +81,7 @@ public class Scroll_Control : MonoBehaviour
             }
         }
     }
-    //Pilla la referencia del post
-    public void GetThisPost(Posts postActual)
-    {
-        post = postActual;
-    }
+    
     //Son delays para que no se haga por cada frame las sumas y restas
     IEnumerator DelayOfGrowing()
     {
