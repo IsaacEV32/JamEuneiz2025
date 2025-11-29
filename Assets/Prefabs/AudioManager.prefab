@@ -1,0 +1,217 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1026114833522655215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6164723870679358328}
+  - component: {fileID: 2854851470919234642}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6164723870679358328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026114833522655215}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2052357003969076971}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2854851470919234642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026114833522655215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447e66addf4925647adee23a862cc7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &4389597158449552037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2052357003969076971}
+  - component: {fileID: 6199075318766044287}
+  m_Layer: 0
+  m_Name: FMOD_Events
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2052357003969076971
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389597158449552037}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6164723870679358328}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6199075318766044287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389597158449552037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43367d4e39329db45aaeef275e966496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <SelectButton>k__BackingField:
+    Guid:
+      Data1: 1604566915
+      Data2: 1209926107
+      Data3: -496664656
+      Data4: 1646164890
+    Path: event:/SFX/Menu/SelectButton
+  <ConfirmButton>k__BackingField:
+    Guid:
+      Data1: -1984046578
+      Data2: 1251855211
+      Data3: -1607198072
+      Data4: -343927280
+    Path: event:/SFX/Menu/ConfirmButton
+  <BackInMenu>k__BackingField:
+    Guid:
+      Data1: -1666319888
+      Data2: 1254935960
+      Data3: 581065886
+      Data4: 354822126
+    Path: event:/SFX/Menu/BackInMenu
+  <Scroll>k__BackingField:
+    Guid:
+      Data1: 1952370708
+      Data2: 1091270542
+      Data3: 2027749814
+      Data4: 584979690
+    Path: event:/SFX/Scroller/Scroll
+  <LikeAPost>k__BackingField:
+    Guid:
+      Data1: -1394722264
+      Data2: 1270817737
+      Data3: 327117717
+      Data4: 886789669
+    Path: event:/SFX/Scroller/LikeAPost
+  <PostEndEffect>k__BackingField:
+    Guid:
+      Data1: -1674482992
+      Data2: 1328122523
+      Data3: 1913076911
+      Data4: 185978439
+    Path: event:/SFX/Scroller/PostEndEffect
+  <LadridoPerro>k__BackingField:
+    Guid:
+      Data1: 1966280307
+      Data2: 1110804423
+      Data3: -559462771
+      Data4: 1531474112
+    Path: event:/SFX/Minigame1/LadridoPerro
+  <LanzarPelota>k__BackingField:
+    Guid:
+      Data1: -1896870393
+      Data2: 1089712945
+      Data3: -139055453
+      Data4: -1960623877
+    Path: event:/SFX/Minigame1/LanzarPelota
+  <PerroRecogePelota>k__BackingField:
+    Guid:
+      Data1: 211839052
+      Data2: 1102653349
+      Data3: 1238898097
+      Data4: 2119954476
+    Path: event:/SFX/Minigame1/PerroRecogePelota
+  <CogerPelotaDeVuelta>k__BackingField:
+    Guid:
+      Data1: 400583462
+      Data2: 1206843490
+      Data3: -770130043
+      Data4: 1835075072
+    Path: event:/SFX/Minigame1/CogerPelotaDeVuelta
+  <PasarToalla>k__BackingField:
+    Guid:
+      Data1: -109853954
+      Data2: 1164849641
+      Data3: -809299825
+      Data4: 1534322868
+    Path: event:/SFX/Minijuego2/PasarToalla
+  <CompletarMinijuego>k__BackingField:
+    Guid:
+      Data1: -1311648764
+      Data2: 1249126648
+      Data3: -493679192
+      Data4: -987409521
+    Path: event:/SFX/Miscelanea/CompletarMinijuego
+  <FallarMinijuego>k__BackingField:
+    Guid:
+      Data1: 1444756089
+      Data2: 1235179003
+      Data3: -63727744
+      Data4: -83379619
+    Path: event:/SFX/Miscelanea/FallarMinijuego
+  <MusicWhooshChange>k__BackingField:
+    Guid:
+      Data1: 1952370708
+      Data2: 1091270542
+      Data3: 2027749814
+      Data4: 584979690
+    Path: event:/SFX/Scroller/Scroll
+  <OutOfBattery>k__BackingField:
+    Guid:
+      Data1: 352278151
+      Data2: 1328527006
+      Data3: 1254382981
+      Data4: -1414173887
+    Path: event:/SFX/GameEnd/OutOfBattery
+  <FullOfAnxiety>k__BackingField:
+    Guid:
+      Data1: 1717025490
+      Data2: 1117822378
+      Data3: -55272045
+      Data4: 22484457
+    Path: event:/SFX/GameEnd/FullOfAnxiety
+  <MainMenuMusic>k__BackingField:
+    Guid:
+      Data1: -1611866957
+      Data2: 1129744022
+      Data3: -397890372
+      Data4: -1735753227
+    Path: event:/OST/MainMenuMusic
+  <GameplayMusic>k__BackingField:
+    Guid:
+      Data1: -1964671753
+      Data2: 1292040909
+      Data3: 896035479
+      Data4: 49009163
+    Path: event:/OST/GameplayMusic
