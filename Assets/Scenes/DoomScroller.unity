@@ -634,6 +634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 195425759}
   - component: {fileID: 195425760}
+  - component: {fileID: 195425761}
   m_Layer: 5
   m_Name: SliderFelicidad
   m_TagString: Untagged
@@ -710,10 +711,23 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 60
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &195425761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195425758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f97f987453f39de4f97b74fcd8463461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barraFelicidad: {fileID: 0}
 --- !u!1 &217615506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2402,7 +2416,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 714980972}
   m_HandleRect: {fileID: 714980971}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
