@@ -2211,7 +2211,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelArea: {fileID: 618326254}
   trapo: {fileID: 686172844}
-  manchas: []
+  manchas:
+  - {fileID: 1225629335}
+  - {fileID: 1736029618}
+  - {fileID: 1459491658}
+  - {fileID: 1513580474}
+  - {fileID: 351753641}
   gameManager: {fileID: 554954604}
   velocidadTrapo: 600
   radioLimpieza: 60
