@@ -16,6 +16,8 @@ public class Scroll_Control : MonoBehaviour
     bool delayForPressScroll = true;
     //Sirve para encontrar el post
     Posts post;
+
+    public float chronometer = 0f;
     // Se encuentra el mapa de acciones de PlayerController Y para obtener la barra de felicidad
     void Start()
     {
@@ -31,12 +33,19 @@ public class Scroll_Control : MonoBehaviour
             //El máximo y mínimo es 0 y 100
             barraFelicidad.value = Mathf.Clamp(barraFelicidad.value, 0, 99);
             //Se sumara la barra de felicidad
-            if (isPressingAvailable)
+            if (isPressingAvailable && chronometer < 10)
             {
                 barraFelicidad.value++;
                 isPressingAvailable = false;
                 StartCoroutine(DelayOfGrowing());
             }
+            else if (isPressingAvailable && chronometer > 10)
+            {
+                barraFelicidad.value--;
+                isPressingAvailable = false;
+                StartCoroutine(DelayOfGrowing());
+            }
+                chronometer += Time.deltaTime;
 
         }
         else
@@ -57,6 +66,7 @@ public class Scroll_Control : MonoBehaviour
             //Se cambiará de posts
             if (delayForPressScroll)
             {
+                chronometer = 0f;
                 delayForPressScroll = false;
                 post.ChangeTipe();
                 StartCoroutine(DelayForScrolling());
@@ -71,12 +81,12 @@ public class Scroll_Control : MonoBehaviour
     //Son delays para que no se haga por cada frame las sumas y restas
     IEnumerator DelayOfGrowing()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         isPressingAvailable = true;
     }
     IEnumerator DelayForDecreasing()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         delayForDecreasing = true;
     }
     //Es un delay para que el jugador no haga scroll todo el tiempo mientras esté pulsado el stick derecho
