@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 public class GameManager : MonoBehaviour
 {
     [Header("Stats")]
-    //public Slider ansiedad;
+    [SerializeField] public Slider ansiedad;
     public Slider felicidad;
 
     private float tiempoRestante;
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     void ComprobarDerrota()
     {
-        if (/*ansiedad.value <= 0f ||*/ felicidad.value <= 0f)
+        if (ansiedad.value >= 100 || felicidad.value <= 0f)
         {
             Derrota();
         }
