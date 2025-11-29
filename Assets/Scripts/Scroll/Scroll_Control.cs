@@ -25,12 +25,8 @@ public class Scroll_Control : MonoBehaviour
         barraFelicidad = gameObject.GetComponent<Slider>();
     }
 
-<<<<<<< HEAD
-    // Update is called once per frame
-    /*void Update()
-=======
+
     void Update()
->>>>>>> origin/main
     {
         //Es el comportamiento de los posts 
         if (post.posts == TipoPosts.Divertido)
@@ -78,12 +74,7 @@ public class Scroll_Control : MonoBehaviour
             }
         }
     }
-<<<<<<< HEAD
-    */
-    
-=======
     //Pilla la referencia del post
->>>>>>> origin/main
     public void GetThisPost(Posts postActual)
     {
         post = postActual;
