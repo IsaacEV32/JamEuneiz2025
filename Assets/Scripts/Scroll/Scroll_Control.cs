@@ -5,36 +5,59 @@ using UnityEngine.UI;
 
 public class Scroll_Control : MonoBehaviour
 {
+    //Mapa de acciones del stick derecho
     InputAction scrollController;
+    //Controla el slider de la barra de felicidad
     [SerializeField] Slider barraFelicidad;
+    //Sirven para controlar que no se haga de forma inmediata los cambios de la barra de felicidad
     bool isPressingAvailable = true;
     bool delayForDecreasing = true;
+    //Sirve para controlar el input del jugador
     bool delayForPressScroll = true;
+    //Sirve para encontrar el post
     Posts post;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public float chronometer = 0f;
+    // Se encuentra el mapa de acciones de PlayerController Y para obtener la barra de felicidad
     void Start()
     {
         scrollController = InputSystem.actions.FindAction("PlayerController");
         barraFelicidad = gameObject.GetComponent<Slider>();
     }
 
+<<<<<<< HEAD
     // Update is called once per frame
     /*void Update()
+=======
+    void Update()
+>>>>>>> origin/main
     {
+        //Es el comportamiento de los posts 
         if (post.posts == TipoPosts.Divertido)
         {
+            //El máximo y mínimo es 0 y 100
             barraFelicidad.value = Mathf.Clamp(barraFelicidad.value, 0, 99);
-            if (isPressingAvailable)
+            //Se sumara la barra de felicidad
+            if (isPressingAvailable && chronometer < 10)
             {
                 barraFelicidad.value++;
                 isPressingAvailable = false;
                 StartCoroutine(DelayOfGrowing());
             }
+            else if (isPressingAvailable && chronometer > 10)
+            {
+                barraFelicidad.value--;
+                isPressingAvailable = false;
+                StartCoroutine(DelayOfGrowing());
+            }
+                chronometer += Time.deltaTime;
 
         }
         else
         {
+            //El máximo y mínimo es 0 y 100
             barraFelicidad.value = Mathf.Clamp(barraFelicidad.value, 0, 99);
+            //Se restara la barra de felicidad
             if (delayForDecreasing)
             {
                 barraFelicidad.value--;
@@ -42,33 +65,41 @@ public class Scroll_Control : MonoBehaviour
                 StartCoroutine(DelayForDecreasing());
             }
         }
+        //Sirve para controlar el input del jugador
         if (scrollController.IsPressed())
         {
+            //Se cambiará de posts
             if (delayForPressScroll)
             {
+                chronometer = 0f;
                 delayForPressScroll = false;
                 post.ChangeTipe();
                 StartCoroutine(DelayForScrolling());
             }
-           
         }
     }
+<<<<<<< HEAD
     */
     
+=======
+    //Pilla la referencia del post
+>>>>>>> origin/main
     public void GetThisPost(Posts postActual)
     {
         post = postActual;
     }
+    //Son delays para que no se haga por cada frame las sumas y restas
     IEnumerator DelayOfGrowing()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         isPressingAvailable = true;
     }
     IEnumerator DelayForDecreasing()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         delayForDecreasing = true;
     }
+    //Es un delay para que el jugador no haga scroll todo el tiempo mientras esté pulsado el stick derecho
     IEnumerator DelayForScrolling()
     {
         yield return new WaitForSeconds(1);
