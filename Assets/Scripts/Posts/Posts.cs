@@ -1,25 +1,26 @@
 using UnityEngine;
 
- 
+public enum TipoPosts
+{
+    Divertido, Depresivo
+};
 public class Posts : MonoBehaviour
 {
-    enum TipoPosts 
-    { 
-        Divertido, Depresivo
-    };
-    [SerializeField] TipoPosts posts;
-    int numRandom = 0;
+    
+    [SerializeField] internal TipoPosts posts;
+    float numRandom = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        numRandom = Random.Range(1,2);
+        numRandom = Random.value % 1;
         Debug.Log(numRandom);
-        if (numRandom == 1)
+        if (numRandom <= 0.5f)
         {
             this.posts = TipoPosts.Divertido;
         }
-        else if(numRandom == 2)
+        else if (numRandom > 0.5f)
         {
+
             this.posts = TipoPosts.Depresivo;
         }
     }
@@ -27,6 +28,22 @@ public class Posts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         
+
+    }
+    internal void ChangeTipe()
+    {
+        numRandom = Random.value % 1;
+        Debug.Log(numRandom);
+        if (numRandom <= 0.5f)
+        {
+            this.posts = TipoPosts.Divertido;
+        }
+        else if (numRandom > 0.5f)
+        {
+
+            this.posts = TipoPosts.Depresivo;
+        }
     }
 }
