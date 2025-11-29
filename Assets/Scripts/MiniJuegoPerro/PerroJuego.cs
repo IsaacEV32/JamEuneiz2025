@@ -28,6 +28,8 @@ public class MinijuegoPerro : MonoBehaviour
 
     bool canYouIncreaseAnxiety = true;
 
+    bool waitForChange = false;
+
     private enum Estado
     {
         EsperandoLanzar,
@@ -52,19 +54,28 @@ public class MinijuegoPerro : MonoBehaviour
     {
         if (gameObject.activeInHierarchy)
         {
-            switch (estadoActual)
+            if (!waitForChange)
             {
-                case Estado.EsperandoLanzar:
-                    UpdateEsperandoLanzar();
-                    break;
+                switch (estadoActual)
+                {
+                    case Estado.EsperandoLanzar:
+                        waitForChange = true;
+                        UpdateEsperandoLanzar();
+                        waitForChange = false;
+                        break;
 
-                case Estado.PelotaVolando:
-                    UpdatePelotaVolando();
-                    break;
+                    case Estado.PelotaVolando:
+                        waitForChange = true;
+                        UpdatePelotaVolando();
+                        waitForChange = false;
+                        break;
 
-                case Estado.PerroVolviendoConPelota:
-                    UpdatePerroVolviendoConPelota();
-                    break;
+                    case Estado.PerroVolviendoConPelota:
+                        waitForChange = true;
+                        UpdatePerroVolviendoConPelota();
+                        waitForChange = false;
+                        break;
+                }
             }
         }
 
@@ -77,7 +88,6 @@ public class MinijuegoPerro : MonoBehaviour
             StartCoroutine(DelayForAnxietyIncrease());
         }
     }
-
     IEnumerator DelayForAnxietyIncrease()
     {
         yield return new WaitForSeconds(1);
@@ -86,7 +96,6 @@ public class MinijuegoPerro : MonoBehaviour
 
     void UpdateEsperandoLanzar()
     {
-        
         pelota.anchoredPosition = posInicialPelota;
 
         
@@ -143,7 +152,6 @@ public class MinijuegoPerro : MonoBehaviour
 
     void LanzarPelota()
     {
-        
         Vector2 dir = Random.insideUnitCircle.normalized;
         velocidadPelotaActual = dir * velocidadPelota;
         estadoActual = Estado.PelotaVolando;

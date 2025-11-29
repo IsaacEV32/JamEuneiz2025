@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Security.Cryptography;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,9 +11,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] public Slider ansiedad;
     public Slider felicidad;
 
-    private float tiempoRestante;
+    public float tiempoRestante = 2;
     private bool juegoTerminado = false;
 
+    private bool isAvailableChronometer = false;
     [Header("UI barras y tiempo")]
 
     //public TextMeshProUGUI textoTiempo;
@@ -46,18 +48,30 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         ansiedad.value = Mathf.Clamp(ansiedad.value, 0, 100);
-        ////if(juegoTerminado) return;
-        //tiempoRestante -= Time.deltaTime;
-
-        //if (tiempoRestante <=0f) 
-        //{
-        //    tiempoRestante = 0f;
-        //    Victoria();
-        //}
-        ComprobarDerrota();
+        if (!juegoTerminado)
+        {
+            if (!isAvailableChronometer)
+            {
+                isAvailableChronometer = true;
+                tiempoRestante -= Time.deltaTime;
+                StartCoroutine(DelayForChronometer());
+            }
+            if (tiempoRestante <= 0f)
+            {
+                tiempoRestante = 0f;
+                Victoria();
+            }
+            ComprobarDerrota();
+        }
+        
+        
         //ActualizarUI();
     }
-
+    IEnumerator DelayForChronometer()
+    {
+        yield return new WaitForSeconds(1);
+        isAvailableChronometer = false;
+    }
     void ComprobarDerrota()
     {
         if (ansiedad.value >= 100 || felicidad.value <= 0f)
