@@ -2045,6 +2045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ansiedad: {fileID: 1519277346}
   felicidad: {fileID: 0}
+  tiempoRestante: 2
   panelResultado: {fileID: 886592787}
   textoResultado: {fileID: 1992896024}
 --- !u!4 &554954605
