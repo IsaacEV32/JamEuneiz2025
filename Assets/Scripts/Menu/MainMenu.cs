@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
     public void Jugar()
     {
         
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("DoomScroller");
     }
 
     public void Salir()
