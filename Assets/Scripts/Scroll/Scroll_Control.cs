@@ -39,7 +39,7 @@ public class Scroll_Control : MonoBehaviour
         if (post.posts == TipoPosts.Divertido)
         {
             //El máximo y mínimo es 0 y 100
-            barraFelicidad.value = Mathf.Clamp(barraFelicidad.value, 0, 99);
+            barraFelicidad.value = Mathf.Clamp(barraFelicidad.value, 0, 100);
             //Se sumara la barra de felicidad
             if (isPressingAvailable && chronometer < 10)
             {
