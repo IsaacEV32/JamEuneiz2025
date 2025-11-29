@@ -19,7 +19,7 @@ public class Scroll_Control : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (post.posts == TipoPosts.Divertido)
         {
@@ -53,6 +53,8 @@ public class Scroll_Control : MonoBehaviour
            
         }
     }
+    */
+    
     public void GetThisPost(Posts postActual)
     {
         post = postActual;
