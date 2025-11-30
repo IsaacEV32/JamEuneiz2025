@@ -20,6 +20,7 @@ public class Scroll_Control : MonoBehaviour
     public float chronometer = 0f;
 
     [SerializeField] GameManager gameManager;
+    bool maxHappy = true;
     // Se encuentra el mapa de acciones de PlayerController Y para obtener la barra de felicidad
     void Start()
     {
@@ -52,6 +53,11 @@ public class Scroll_Control : MonoBehaviour
                 barraFelicidad.value--;
                 isPressingAvailable = false;
                 StartCoroutine(DelayOfGrowing());
+            }
+            if (maxHappy && chronometer > 10)
+            {
+                maxHappy = false;
+                AudioManager.instance.PlayOneShot(FMOD_Events.instance.PostEndEffect, this.transform.position);
             }
                 chronometer += Time.deltaTime;
 
