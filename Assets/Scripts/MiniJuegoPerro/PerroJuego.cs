@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System.Collections;
+using UnityEngine.InputSystem;
 public class PerroJuego : MonoBehaviour
 {
     [Header("Referencias")]
@@ -7,6 +8,8 @@ public class PerroJuego : MonoBehaviour
     public RectTransform perro;
     public GameManager gameManager;
     public TaskManager taskManager;
+
+    InputAction throwBall;
 
     [Header("Parámetros")]
     public float velocidadPelota = 800f;
@@ -19,6 +22,11 @@ public class PerroJuego : MonoBehaviour
     private int lanzamientosHechos = 0;
 
     private bool minijuegoCompletado = false;
+    bool waitForChange = false;
+    bool canYouIncreaseAnxiety = true;
+    bool waitForBall;
+
+
     private enum Estado
     {
         EsperandoLanzar,
@@ -86,7 +94,7 @@ public class PerroJuego : MonoBehaviour
         }
     }
 
-    void UpdateEsperando()
+    void UpdateEsperandoLanzar()
     {
         // Aseguramos posiciones base
         pelota.anchoredPosition = posInicialPelota;
@@ -97,11 +105,11 @@ public class PerroJuego : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            estadoActual = Estado.PelotaHaciaPerro;
+            estadoActual = Estado.PelotaVolando;
         }
     }
 
-    void UpdatePelotaHaciaPerro()
+    void UpdatePelotaVolando()
     {
         // Pelota va recta al perro
         pelota.anchoredPosition = Vector2.MoveTowards(
@@ -113,11 +121,11 @@ public class PerroJuego : MonoBehaviour
         if (Vector2.Distance(pelota.anchoredPosition, perro.anchoredPosition) < distanciaUmbral)
         {
             // Cuando llega, perro empieza a volver con la pelota
-            estadoActual = Estado.PelotaDeVuelta;
+            estadoActual = Estado.PerroVolviendoConPelota;
         }
     }
 
-    void UpdatePelotaDeVuelta()
+    void UpdatePerroVolviendoConPelota()
     {
         // Perro vuelve a su posición inicial
         perro.anchoredPosition = Vector2.MoveTowards(
@@ -146,16 +154,6 @@ public class PerroJuego : MonoBehaviour
             }
         }
     }
-
-    void CompletarMinijuego()
-    {
-        if (estadoActual == Estado.Terminado) return;
-        estadoActual = Estado.Terminado;
-
-        // Pequeño ajuste visual: devolvemos pelota al origen
-        pelota.anchoredPosition = posInicialPelota;
-        perro.anchoredPosition = posInicialPerro;
-
     void CompletarMinijuego()
     {
         minijuegoCompletado = true;
@@ -170,7 +168,8 @@ public class PerroJuego : MonoBehaviour
         if (gameManager != null)
             //gameManager.ModificarAnsiedad(-10f);
 
-        if (taskManager != null)
+            if (taskManager != null)
+                Debug.Log("ChangeMinigame");
             taskManager.NotificarMinijuegoTerminado();
 
         gameObject.SetActive(false);
@@ -178,7 +177,7 @@ public class PerroJuego : MonoBehaviour
     }
     public void ResetMinijuego()
     {
-        atrapadas = 0;
+        lanzamientosHechos = 0;
         minijuegoCompletado = false;
         estadoActual = Estado.EsperandoLanzar;
         waitForBall = true;
