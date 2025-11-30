@@ -34,6 +34,7 @@ public class AudioManager : MonoBehaviour
     public void InitializeMusic(EventReference musicEventReference)
     {
         musicEventInstance = CreateInstance(musicEventReference);
+        musicEventInstance.start();
 
     }
     public EventInstance CreateInstance(EventReference eventReference)
