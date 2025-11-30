@@ -2112,6 +2112,7 @@ MonoBehaviour:
   sliderFelicidad: {fileID: 195425760}
   textoTiempo: {fileID: 0}
   panelResultado: {fileID: 828918487}
+  GameOver: {fileID: 886592787}
   textoResultado: {fileID: 0}
   taskManager: {fileID: 1314970571}
 --- !u!4 &554954605
