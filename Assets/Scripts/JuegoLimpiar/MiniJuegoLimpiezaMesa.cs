@@ -65,7 +65,7 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
 
         float minX = r.xMin + halfWidth;
         float maxX = r.xMax - halfWidth;
-        float minY = r.xMin + halfHeight;
+        float minY = r.yMin + halfHeight;
         float maxY = r.yMax - halfHeight;
 
         nuevaPos.x = Mathf.Clamp(nuevaPos.x, minX, maxX);
