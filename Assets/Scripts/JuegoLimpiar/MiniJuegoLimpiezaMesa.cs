@@ -20,12 +20,24 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
 
     private Vector2 trapoPosInicial;
     private int totalManchas;
-    private int manchasLimpias = 0;
-
+    private List<float> alphasIniciales = new List<float>();
+    public bool reiniciarAlpha = true;
     void Start()
     {
         trapoPosInicial = trapo.anchoredPosition;
         totalManchas = manchas.Count;
+        GuardarEstadosIniciales();
+    }
+    void GuardarEstadosIniciales()
+    {
+        alphasIniciales.Clear();
+        foreach (Image mancha in manchas)
+        {
+            if (mancha != null)
+            {
+                alphasIniciales.Add(mancha.color.a);
+            }
+        }
     }
 
     void Update()
@@ -83,21 +95,39 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
                 
                 if (c.a <= 0.05f)
                 {
-                    manchasLimpias++;
-                    Destroy(mancha.gameObject);
+                    mancha.gameObject.SetActive(false);
+                    break;
                 }
             }
         }
-
-        
-        manchas.RemoveAll(m => m == null);
     }
 
     void ComprobarCompletado()
     {
         if (totalManchas == 0) return;
 
-        float porcentajeLimpio = (manchasLimpias / (float)totalManchas) * 100f;
+        float limpiezaTotal = 0f;
+
+        foreach (Image mancha in manchas)
+        {
+            if (mancha != null)
+            {
+                if (!mancha.gameObject.activeInHierarchy)
+                {
+                    // Mancha completamente limpia (desactivada)
+                    limpiezaTotal += 1f;
+                }
+                else
+                {
+                    // Mancha parcialmente limpia - cuanto más transparente, más limpia
+                    limpiezaTotal += (1f - mancha.color.a);
+                }
+            }
+        }
+
+        float porcentajeLimpio = (limpiezaTotal / totalManchas) * 100f;
+
+        Debug.Log($"Limpieza total: {limpiezaTotal}/{totalManchas}, Porcentaje: {porcentajeLimpio}%");
 
         if (porcentajeLimpio >= porcentajeNecesario)
         {
@@ -122,7 +152,23 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
         }
 
         gameObject.SetActive(false);
-
+        RestartMesa();
         Debug.Log("Minijuego de limpiar mesa COMPLETADO");
+    }
+    public void RestartMesa()
+    {
+        for (int i = 0; i < manchas.Count; i++)
+        {
+            if (manchas[i] != null)
+            {
+                manchas[i].gameObject.SetActive(true);
+                if (reiniciarAlpha && i < alphasIniciales.Count)
+                {
+                    Color c = manchas[i].color;
+                    c.a = alphasIniciales[i];
+                    manchas[i].color = c;
+                }
+            }
+        }
     }
 }
