@@ -105,7 +105,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
         if (lanzamientosHechos >= lanzamientosNecesarios)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || throwBall.IsPressed())
         {
 
             estadoActual = Estado.PelotaVolando;
