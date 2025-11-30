@@ -74,40 +74,13 @@ MonoBehaviour:
     Data4: -1735753227
   Banks:
   - {fileID: 3013809592640388002}
-  IsStream: 0
+  IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
---- !u!114 &-5454853820847086892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Minigame1/CogerPelotaDeVuelta
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Minigame1/CogerPelotaDeVuelta
-  Guid:
-    Data1: 400583462
-    Data2: 1206843490
-    Data3: -770130043
-    Data4: 1835075072
-  Banks:
-  - {fileID: 3013809592640388002}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
+  Length: 73411
 --- !u!114 &-5406330434748305482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,13 +101,13 @@ MonoBehaviour:
     Data4: 49009163
   Banks:
   - {fileID: 3013809592640388002}
-  IsStream: 0
+  IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 113777
 --- !u!114 &-3510721703962192081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,10 +177,10 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD_Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639000095937217704
+  lastModified: 639001153645675331
   FileSizes:
   - Name: Desktop
-    Value: 1708
+    Value: 1610
   Exists: 1
 --- !u!114 &-52689505350652412
 MonoBehaviour:
@@ -256,11 +229,9 @@ MonoBehaviour:
   - {fileID: 6644438533964169027}
   - {fileID: 6104497552694355319}
   - {fileID: 3760659817375832897}
-  - {fileID: -5454853820847086892}
   - {fileID: -3510721703962192081}
   - {fileID: -7533805864329750818}
   - {fileID: 7816451995007339812}
-  - {fileID: 2202125580240239198}
   - {fileID: -8824983992218691702}
   - {fileID: 6518181993633746937}
   - {fileID: 3753380575962970611}
@@ -275,7 +246,7 @@ MonoBehaviour:
   - {fileID: 3013809592640388002}
   StringsBanks:
   - {fileID: -867508599214578480}
-  cacheTime: 639000095937217704
+  cacheTime: 639001153645675331
   cacheVersion: 131634
 --- !u!114 &307540893227978115
 MonoBehaviour:
@@ -304,33 +275,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &2202125580240239198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Miscelanea/MusicWhoosChange
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Miscelanea/MusicWhoosChange
-  Guid:
-    Data1: 1295846516
-    Data2: 1144208536
-    Data3: 889600409
-    Data4: -1608810388
-  Banks:
-  - {fileID: 3013809592640388002}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &3013809592640388002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,10 +290,10 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD_Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639000095937141961
+  lastModified: 639001153645675331
   FileSizes:
   - Name: Desktop
-    Value: 10108
+    Value: 2674912
   Exists: 1
 --- !u!114 &3127671864549141478
 MonoBehaviour:
