@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Panel de resultado")]
     public GameObject panelResultado;
+    public GameObject GameOver;
     public TextMeshProUGUI textoResultado;
 
     [Header("Referencias")]
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
 
         if (panelResultado != null)
             panelResultado.SetActive(false);
+            GameOver.SetActive(false);
         AudioManager.instance.InitializeMusic(FMOD_Events.instance.GameplayMusic);
         ActualizarUI();
     }
@@ -99,7 +101,7 @@ public class GameManager : MonoBehaviour
         juegoTerminado = true;
 
         if (panelResultado != null)
-            panelResultado.SetActive(true);
+            GameOver.SetActive(true);
         AudioManager.instance.StopMusic();
         if (textoResultado != null)
             textoResultado.text = mensaje;
