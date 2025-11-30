@@ -109,10 +109,11 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
                 c.a -= velocidadLimpieza * Time.deltaTime;
                 c.a = Mathf.Clamp01(c.a);
                 mancha.color = c;
-
+               
                 
                 if (c.a <= 0.05f)
                 {
+                    //AudioManager.instance.PlayOneShot(FMOD_Events.instance.PasarToalla, this.transform.position);
                     mancha.gameObject.SetActive(false);
                     break;
                 }
@@ -160,7 +161,7 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
         {
             gameManager.sliderAnsiedad.value = gameManager.sliderAnsiedad.value - 10;
         }
-
+        AudioManager.instance.PlayOneShot(FMOD_Events.instance.CompletarMinijuego, this.transform.position);
         // Opcional: resetear trapo si quieres
         trapo.anchoredPosition = trapoPosInicial;
 
