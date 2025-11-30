@@ -7,6 +7,9 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject panelResultado;
+    
+    
     [Header("Stats")]
     [SerializeField] public Slider ansiedad;
     public Slider felicidad;
@@ -116,4 +119,18 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("Menu");
     }
+    public void VictoriaPorTareas()
+    {
+        if (juegoTerminado) return;
+        juegoTerminado = true;
+
+        if (panelResultado != null)
+            panelResultado.SetActive(true);
+
+        if (textoResultado != null)
+            textoResultado.text = "¡Has completado todas las tareas!";
+
+        Time.timeScale = 0f;
+    }
+
 }

@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class MinijuegoLimpiezaMesa : MonoBehaviour
 {
+    public TaskManager taskManager;
+
     [Header("Referencias")]
     public RectTransform panelArea;       
     public RectTransform trapo;
@@ -110,10 +112,17 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
             //gameManager.ModificarAnsiedad(-10f);
         }
 
-        
+        // Opcional: resetear trapo si quieres
         trapo.anchoredPosition = trapoPosInicial;
 
+        // Avisar al TaskManager
+        if (taskManager != null)
+        {
+            taskManager.NotificarMinijuegoTerminado();
+        }
+
         gameObject.SetActive(false);
-        Debug.Log("Minijuego de limpiar la mesa completado");
+
+        Debug.Log("Minijuego de limpiar mesa COMPLETADO");
     }
 }

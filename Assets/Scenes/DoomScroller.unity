@@ -2176,8 +2176,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1782c6149b32be24fbd1e8b543ddbcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelResultado: {fileID: 0}
   ansiedad: {fileID: 1519277346}
-  felicidad: {fileID: 0}
+  felicidad: {fileID: 195425760}
   tiempoRestante: 2
   GameOver: {fileID: 886592787}
   Win: {fileID: 828918487}
@@ -2209,6 +2210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f57d85d98dc38d344a7533ba492e5d33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  taskManager: {fileID: 1314970571}
   panelArea: {fileID: 618326254}
   trapo: {fileID: 686172844}
   manchas:
@@ -2317,6 +2319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f57d85d98dc38d344a7533ba492e5d33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  taskManager: {fileID: 1314970571}
   panelArea: {fileID: 618326254}
   trapo: {fileID: 686172844}
   manchas:
@@ -2348,7 +2351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &622924572
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2422,15 +2425,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802219765294f6c4482afb20c63ac705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelArea: {fileID: 622924572}
   pelota: {fileID: 1317263194}
   perro: {fileID: 944108707}
   gameManager: {fileID: 554954604}
-  velocidadPelota: 800
+  taskManager: {fileID: 1314970571}
+  velocidadPelota: 600
   velocidadPerro: 200
-  atrapadasNecesarias: 3
-  distanciaAtrapar: 8
-  margenBordes: 20
+  lanzamientosNecesarios: 3
+  distanciaUmbral: 5
 --- !u!1 &686172843
 GameObject:
   m_ObjectHideFlags: 0
@@ -3788,6 +3790,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1269228590}
   m_CullTransparentMesh: 1
+--- !u!1 &1314970570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1314970572}
+  - component: {fileID: 1314970571}
+  m_Layer: 0
+  m_Name: TaskManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1314970571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314970570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a323057dde561547834db075ce6e712, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 554954604}
+  minijuegos:
+  - {fileID: 622924571}
+  - {fileID: 618326253}
+--- !u!4 &1314970572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314970570}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 387.84454, y: 303.09894, z: 62.437897}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1316603310
 GameObject:
   m_ObjectHideFlags: 0
@@ -5975,15 +6025,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802219765294f6c4482afb20c63ac705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelArea: {fileID: 622924572}
   pelota: {fileID: 1317263194}
   perro: {fileID: 944108707}
   gameManager: {fileID: 554954604}
+  taskManager: {fileID: 1314970571}
   velocidadPelota: 600
-  velocidadPerro: 500
-  atrapadasNecesarias: 3
-  distanciaAtrapar: 50
-  margenBordes: 20
+  velocidadPerro: 200
+  lanzamientosNecesarios: 3
+  distanciaUmbral: 5
 --- !u!4 &2001901135
 Transform:
   m_ObjectHideFlags: 0
@@ -6332,3 +6381,4 @@ SceneRoots:
   - {fileID: 554954605}
   - {fileID: 2001901135}
   - {fileID: 430504916}
+  - {fileID: 1314970572}
