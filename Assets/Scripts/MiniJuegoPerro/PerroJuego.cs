@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class PerroJuego : MonoBehaviour
+public class MinijuegoPerroSimple : MonoBehaviour
 {
     [Header("Referencias")]
+    public RectTransform panelArea;   // El panel del minijuego (PerroPanel)
     public RectTransform pelota;
     public RectTransform perro;
     public GameManager gameManager;
@@ -13,18 +14,27 @@ public class PerroJuego : MonoBehaviour
     public float velocidadPerro = 700f;
     public int lanzamientosNecesarios = 3;
     public float distanciaUmbral = 5f;
+    public float margenBordes = 50f;      // margen para no ir pegado al borde
 
     private Vector2 posInicialPelota;
     private Vector2 posInicialPerro;
+    private Vector2 objetivoPelota;       // punto aleatorio al que va la pelota
     private int lanzamientosHechos = 0;
 
     private bool minijuegoCompletado = false;
     private enum Estado
     {
         EsperandoLanzar,
+<<<<<<< Updated upstream
         PelotaVolando,
         PerroVolviendoConPelota,
         Completado
+=======
+        PelotaHaciaObjetivo,
+        PerroHaciaPelota,
+        PerroVuelveConPelota,
+        Terminado
+>>>>>>> Stashed changes
     }
 
     private Estado estadoActual = Estado.EsperandoLanzar;
@@ -53,6 +63,7 @@ public class PerroJuego : MonoBehaviour
                         waitForChange = false;
                         break;
 
+<<<<<<< Updated upstream
                     case Estado.PelotaVolando:
                         waitForChange = true;
                         UpdatePelotaVolando();
@@ -83,8 +94,23 @@ public class PerroJuego : MonoBehaviour
         if (!minijuegoCompletado)
         {
             canYouIncreaseAnxiety = true;
+=======
+            case Estado.PelotaHaciaObjetivo:
+                UpdatePelotaHaciaObjetivo();
+                break;
+
+            case Estado.PerroHaciaPelota:
+                UpdatePerroHaciaPelota();
+                break;
+
+            case Estado.PerroVuelveConPelota:
+                UpdatePerroVuelveConPelota();
+                break;
+>>>>>>> Stashed changes
         }
     }
+
+    // ---------- ESTADOS ----------
 
     void UpdateEsperando()
     {
@@ -97,27 +123,44 @@ public class PerroJuego : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            estadoActual = Estado.PelotaHaciaPerro;
+            ElegirObjetivoAleatorio();
+            estadoActual = Estado.PelotaHaciaObjetivo;
         }
     }
 
-    void UpdatePelotaHaciaPerro()
+    void UpdatePelotaHaciaObjetivo()
     {
-        // Pelota va recta al perro
+        // Pelota va desde el origen hacia un punto aleatorio del panel
         pelota.anchoredPosition = Vector2.MoveTowards(
             pelota.anchoredPosition,
-            perro.anchoredPosition,
+            objetivoPelota,
             velocidadPelota * Time.deltaTime
         );
 
-        if (Vector2.Distance(pelota.anchoredPosition, perro.anchoredPosition) < distanciaUmbral)
+        if (Vector2.Distance(pelota.anchoredPosition, objetivoPelota) < distanciaUmbral)
         {
-            // Cuando llega, perro empieza a volver con la pelota
-            estadoActual = Estado.PelotaDeVuelta;
+            // Cuando llega al punto aleatorio, ahora el perro va a por la pelota
+            estadoActual = Estado.PerroHaciaPelota;
         }
     }
 
-    void UpdatePelotaDeVuelta()
+    void UpdatePerroHaciaPelota()
+    {
+        // El perro corre hacia donde está la pelota
+        perro.anchoredPosition = Vector2.MoveTowards(
+            perro.anchoredPosition,
+            pelota.anchoredPosition,
+            velocidadPerro * Time.deltaTime
+        );
+
+        if (Vector2.Distance(perro.anchoredPosition, pelota.anchoredPosition) < distanciaUmbral)
+        {
+            // Cuando la alcanza, empieza a volver con ella
+            estadoActual = Estado.PerroVuelveConPelota;
+        }
+    }
+
+    void UpdatePerroVuelveConPelota()
     {
         // Perro vuelve a su posiciÃ³n inicial
         perro.anchoredPosition = Vector2.MoveTowards(
@@ -126,7 +169,7 @@ public class PerroJuego : MonoBehaviour
             velocidadPerro * Time.deltaTime
         );
 
-        // Pelota va pegada al perro, como si la llevara en la boca
+        // La pelota va pegada al perro, como si la llevara en la boca
         pelota.anchoredPosition = perro.anchoredPosition;
 
         if (Vector2.Distance(perro.anchoredPosition, posInicialPerro) < distanciaUmbral)
@@ -141,10 +184,27 @@ public class PerroJuego : MonoBehaviour
             }
             else
             {
-                // Preparado para siguiente lanzamiento
+                // Vuelta al estado de esperar -> siguiente lanzamiento
                 estadoActual = Estado.EsperandoLanzar;
             }
         }
+    }
+
+    // ---------- LÓGICA ----------
+
+    void ElegirObjetivoAleatorio()
+    {
+        Rect r = panelArea.rect;
+
+        float minX = r.xMin + margenBordes;
+        float maxX = r.xMax - margenBordes;
+        float minY = r.yMin + margenBordes;
+        float maxY = r.yMax - margenBordes;
+
+        float x = Random.Range(minX, maxX);
+        float y = Random.Range(minY, maxY);
+
+        objetivoPelota = new Vector2(x, y);
     }
 
     void CompletarMinijuego()
@@ -152,7 +212,11 @@ public class PerroJuego : MonoBehaviour
         if (estadoActual == Estado.Terminado) return;
         estadoActual = Estado.Terminado;
 
+<<<<<<< Updated upstream
         // PequeÃ±o ajuste visual: devolvemos pelota al origen
+=======
+        // Ajuste visual final
+>>>>>>> Stashed changes
         pelota.anchoredPosition = posInicialPelota;
         perro.anchoredPosition = posInicialPerro;
 
@@ -168,13 +232,13 @@ public class PerroJuego : MonoBehaviour
         StopAllCoroutines();
         pelota.gameObject.SetActive(false);
         if (gameManager != null)
-            //gameManager.ModificarAnsiedad(-10f);
+            gameManager.ansiedad.value=-10f;
 
         if (taskManager != null)
             taskManager.NotificarMinijuegoTerminado();
 
         gameObject.SetActive(false);
-        Debug.Log("Minijuego del perro COMPLETADO (simple)");
+        Debug.Log("Minijuego del perro COMPLETADO (random simple)");
     }
     public void ResetMinijuego()
     {
