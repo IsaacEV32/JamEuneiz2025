@@ -2176,13 +2176,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1782c6149b32be24fbd1e8b543ddbcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelResultado: {fileID: 0}
-  ansiedad: {fileID: 1519277346}
-  felicidad: {fileID: 195425760}
-  tiempoRestante: 2
-  GameOver: {fileID: 886592787}
-  Win: {fileID: 828918487}
+  Ansiedad: 50
+  felicidad: 50
+  tiempoMax: 120
+  sliderAnsiedad: {fileID: 1519277346}
+  sliderFelicidad: {fileID: 195425760}
+  textoTiempo: {fileID: 0}
+  panelResultado: {fileID: 828918487}
   textoResultado: {fileID: 0}
+  taskManager: {fileID: 1314970571}
 --- !u!4 &554954605
 Transform:
   m_ObjectHideFlags: 0
@@ -3821,7 +3823,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a323057dde561547834db075ce6e712, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 554954604}
   minijuegos:
   - {fileID: 622924571}
   - {fileID: 618326253}

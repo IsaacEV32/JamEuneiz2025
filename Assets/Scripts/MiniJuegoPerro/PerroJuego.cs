@@ -84,7 +84,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
         if (canYouIncreaseAnxiety && !minijuegoCompletado)
         {
             canYouIncreaseAnxiety = false;
-            gameManager.ansiedad.value++;
+            gameManager.sliderAnsiedad.value++;
             StartCoroutine(DelayForAnxietyIncrease());
         }
     }
@@ -191,13 +191,12 @@ public class MinijuegoPerroSimple : MonoBehaviour
         estadoActual = Estado.Completado;
         if (gameManager != null)
         {
-            gameManager.ansiedad.value = gameManager.ansiedad.value - 10;
+            gameManager.sliderAnsiedad.value = gameManager.sliderAnsiedad.value - 10;
         }
         canYouIncreaseAnxiety = false;
         StopAllCoroutines();
         pelota.gameObject.SetActive(false);
-        if (gameManager != null)
-            gameManager.ansiedad.value=-10f;
+
 
             if (taskManager != null)
                 Debug.Log("ChangeMinigame");

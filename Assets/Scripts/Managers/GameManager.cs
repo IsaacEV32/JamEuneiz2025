@@ -2,124 +2,108 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Security.Cryptography;
-using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject panelResultado;
-    
-    
     [Header("Stats")]
-    [SerializeField] public Slider ansiedad;
-    public Slider felicidad;
+    public float Ansiedad = 50f;
+    public float felicidad = 50f;
+    public float tiempoMax = 120f; // duración total de la partida en segundos
 
-    public float tiempoRestante = 2;
+    private float tiempoRestante;
     private bool juegoTerminado = false;
 
-    private bool isAvailableChronometer = false;
     [Header("UI barras y tiempo")]
+    public Slider sliderAnsiedad;
+    public Slider sliderFelicidad;
+    public TextMeshProUGUI textoTiempo;
 
-    //public TextMeshProUGUI textoTiempo;
-
-    [Header ("Panel de resultado")]
-
-    public GameObject GameOver;
-    public GameObject Win;
+    [Header("Panel de resultado")]
+    public GameObject panelResultado;
     public TextMeshProUGUI textoResultado;
 
+    [Header("Referencias")]
+    public TaskManager taskManager;   // <--- arrastra aquí tu TaskManager en el Inspector
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Time.timeScale = 1f;
-        
 
-        
+        tiempoRestante = tiempoMax;
 
-        if (GameOver != null || Win != null) 
+        if (sliderAnsiedad != null)
         {
-            GameOver.SetActive(false);
-            Win.SetActive(false);
-            ActualizarUI();
+            sliderAnsiedad.maxValue = 100;
+            sliderAnsiedad.value = Ansiedad;
         }
-    }
-    public void GetBarraFelicidad(Slider b)
-    {
-        felicidad = b;
+
+        if (sliderFelicidad != null)
+        {
+            sliderFelicidad.maxValue = 100;
+            sliderFelicidad.value = felicidad;
+        }
+
+        if (panelResultado != null)
+            panelResultado.SetActive(false);
+
+        ActualizarUI();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        ansiedad.value = Mathf.Clamp(ansiedad.value, 0, 100);
-        if (!juegoTerminado)
+        if (juegoTerminado) return;
+
+        // Contador de tiempo de partida
+        tiempoRestante -= Time.deltaTime;
+        if (tiempoRestante <= 0f)
         {
-            if (!isAvailableChronometer)
-            {
-                isAvailableChronometer = true;
-                tiempoRestante -= Time.deltaTime;
-                StartCoroutine(DelayForChronometer());
-            }
-            if (tiempoRestante <= 0f)
-            {
-                tiempoRestante = 0f;
-                Victoria();
-            }
-            ComprobarDerrota();
+            tiempoRestante = 0f;
+            Victoria("Has sobrevivido al doomscroll");
         }
-        
-        
-        //ActualizarUI();
-    }
-    IEnumerator DelayForChronometer()
-    {
-        yield return new WaitForSeconds(1);
-        isAvailableChronometer = false;
-    }
-    void ComprobarDerrota()
-    {
-        if (ansiedad.value >= 100 || felicidad.value <= 0f)
+
+        // Derrota por barras
+        if (Ansiedad >= 100f || felicidad <= 0f)
         {
-            Derrota();
+            Derrota("Te ha comido la ansiedad :(");
+        }
+
+        // Victoria por haber completado TODAS las tareas
+        if (taskManager != null && taskManager.TodasLasTareasCompletadas())
+        {
+            Victoria("¡Has completado todas las tareas!");
+        }
+
+        ActualizarUI();
+    }
+
+    void ActualizarUI()
+    {
+        if (sliderAnsiedad != null)
+            sliderAnsiedad.value = Ansiedad;
+
+        if (sliderFelicidad != null)
+            sliderFelicidad.value = felicidad;
+
+        if (textoTiempo != null)
+        {
+            int min = Mathf.FloorToInt(tiempoRestante / 60f);
+            int seg = Mathf.FloorToInt(tiempoRestante % 60f);
+            textoTiempo.text = $"{min:00}:{seg:00}";
         }
     }
-    void ActualizarUI() 
+
+    // Estas funciones las usan posts y minijuegos
+    public void ModificarAnsiedad(float delta)
     {
-        int minutos = Mathf.FloorToInt(tiempoRestante / 60f);
-        int segundos = Mathf.FloorToInt(tiempoRestante % 60f);
-    //    textoTiempo.text = $"{minutos:00}:{segundos:00}";
+        Ansiedad = Mathf.Clamp(Ansiedad + delta, 0f, 100f);
     }
 
-    void Derrota() 
+    public void ModificarFelicidad(float delta)
     {
-        if(juegoTerminado) return;
-        juegoTerminado = true;
-
-        GameOver.SetActive(true);
-        Time.timeScale = 0f;
+        felicidad = Mathf.Clamp(felicidad + delta, 0f, 100f);
     }
 
-    void Victoria() 
-    {
-        if(juegoTerminado) return;
-        juegoTerminado = true;
-        Win.SetActive(true);
-        Time.timeScale = 0f;
-    }
-
-    public void Reintentar() 
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void VolverAlMenu() 
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("Menu");
-    }
-    public void VictoriaPorTareas()
+    void Victoria(string mensaje)
     {
         if (juegoTerminado) return;
         juegoTerminado = true;
@@ -128,9 +112,44 @@ public class GameManager : MonoBehaviour
             panelResultado.SetActive(true);
 
         if (textoResultado != null)
-            textoResultado.text = "¡Has completado todas las tareas!";
+            textoResultado.text = mensaje;
 
         Time.timeScale = 0f;
+        Debug.Log("VICTORIA: " + mensaje);
     }
 
+    void Derrota(string mensaje)
+    {
+        if (juegoTerminado) return;
+        juegoTerminado = true;
+
+        if (panelResultado != null)
+            panelResultado.SetActive(true);
+
+        if (textoResultado != null)
+            textoResultado.text = mensaje;
+
+        Time.timeScale = 0f;
+        Debug.Log("DERROTA: " + mensaje);
+    }
+
+    // Botones del PanelResultado
+    public void Reintentar()
+    {
+        Time.timeScale = 1f;
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
+
+    public void VolverAlMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Menu"); // pon aquí el nombre EXACTO de tu escena de menú
+    }
+
+    public void GetBarraFelicidad(Slider B) 
+    {
+        felicidad = B.value;
+
+    }
 }
