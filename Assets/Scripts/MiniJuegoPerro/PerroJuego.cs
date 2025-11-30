@@ -1,6 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
+
 public class MinijuegoPerroSimple : MonoBehaviour
 {
     [Header("Referencias")]
@@ -33,11 +34,11 @@ public class MinijuegoPerroSimple : MonoBehaviour
     bool lanzarPelota = true;
     bool volverConPelota = true;
 
-
     private enum Estado
     {
         EsperandoLanzar,
         PelotaVolando,
+        PerroBuscandoPelota,       // 👉 NUEVO estado
         PerroVolviendoConPelota,
         Completado
     }
@@ -49,9 +50,15 @@ public class MinijuegoPerroSimple : MonoBehaviour
         posInicialPelota = pelota.anchoredPosition;
         posInicialPerro = perro.anchoredPosition;
         estadoActual = Estado.EsperandoLanzar;
-        taskManager.GetPerro(this);
+
+        if (taskManager != null)
+            taskManager.GetPerro(this);
+
         minijuegoCompletado = false;
-        throwBall = InputSystem.actions.FindAction("Button A");
+
+        // Puede ser null en PC si no tienes el asset cargado, así evitamos errores
+        if (InputSystem.actions != null)
+            throwBall = InputSystem.actions.FindAction("Button A");
     }
 
     void Update()
@@ -60,38 +67,42 @@ public class MinijuegoPerroSimple : MonoBehaviour
         {
             if (!waitForChange)
             {
+                waitForChange = true;
+
                 switch (estadoActual)
                 {
                     case Estado.EsperandoLanzar:
-                        waitForChange = true;
                         UpdateEsperandoLanzar();
-                        waitForChange = false;
                         break;
 
                     case Estado.PelotaVolando:
-                        waitForChange = true;
                         UpdatePelotaHaciaObjetivo();
-                        waitForChange = false;
+                        break;
+
+                    case Estado.PerroBuscandoPelota:
+                        UpdatePerroVolviendoConPelota();   // 👉 va hacia la pelota
                         break;
 
                     case Estado.PerroVolviendoConPelota:
-                        waitForChange = true;
-                        UpdatePerroVuelveConPelota();
-                        waitForChange = false;
+                        UpdatePerroVuelveConPelota();      // 👉 vuelve al origen con la pelota
                         break;
+
                     case Estado.Completado:
                         break;
                 }
+
+                waitForChange = false;
             }
         }
 
-        if (canYouIncreaseAnxiety && !minijuegoCompletado)
+        if (canYouIncreaseAnxiety && !minijuegoCompletado && gameManager != null)
         {
             canYouIncreaseAnxiety = false;
             gameManager.sliderAnsiedad.value++;
             StartCoroutine(DelayForAnxietyIncrease());
         }
     }
+
     IEnumerator DelayForAnxietyIncrease()
     {
         yield return new WaitForSeconds(1);
@@ -100,6 +111,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
             canYouIncreaseAnxiety = true;
         }
     }
+
     void UpdateEsperandoLanzar()
     {
         // Aseguramos posiciones base
@@ -108,18 +120,24 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
         if (lanzamientosHechos >= lanzamientosNecesarios)
             return;
+
         if (esperarPelota)
         {
             volverConPelota = false;
             AudioManager.instance.PlayOneShot(FMOD_Events.instance.LadridoPerro, this.transform.position);
             esperarPelota = false;
         }
-        
 
-        if (Input.GetKeyDown(KeyCode.Space) || throwBall.IsPressed())
+        bool botonTeclado = Input.GetKeyDown(KeyCode.Space);
+        bool botonGamepad = (throwBall != null && throwBall.IsPressed());
+
+        if (botonTeclado || botonGamepad)
         {
+            // 👉 Elegimos un destino ALEATORIO dentro del panel ANTES de lanzar
+            ElegirObjetivoAleatorio();
 
             estadoActual = Estado.PelotaVolando;
+
             if (lanzarPelota)
             {
                 AudioManager.instance.PlayOneShot(FMOD_Events.instance.LanzarPelota, this.transform.position);
@@ -127,6 +145,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
             }
         }
     }
+
     void UpdatePelotaHaciaObjetivo()
     {
         // Pelota va desde el origen hacia un punto aleatorio del panel
@@ -136,15 +155,16 @@ public class MinijuegoPerroSimple : MonoBehaviour
             velocidadPelota * Time.deltaTime
         );
 
+        // Cuando la pelota llega al objetivo, pasamos al estado en el que el perro la busca
         if (Vector2.Distance(pelota.anchoredPosition, objetivoPelota) < distanciaUmbral)
         {
-            // Cuando llega, perro empieza a volver con la pelota
-            estadoActual = Estado.PerroVolviendoConPelota;
+            estadoActual = Estado.PerroBuscandoPelota;
         }
     }
+
+    // 👉 El perro se mueve HASTA donde está la pelota
     void UpdatePerroVolviendoConPelota()
     {
-        // El perro corre hacia donde est� la pelota
         perro.anchoredPosition = Vector2.MoveTowards(
             perro.anchoredPosition,
             pelota.anchoredPosition,
@@ -153,19 +173,23 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
         if (Vector2.Distance(perro.anchoredPosition, pelota.anchoredPosition) < distanciaUmbral)
         {
-            // Cuando la alcanza, empieza a volver con ella
+            // La ha alcanzado -> ahora toca volver al origen con ella
             estadoActual = Estado.PerroVolviendoConPelota;
         }
     }
 
+    // 👉 El perro vuelve a su posición inicial llevando la pelota
     void UpdatePerroVuelveConPelota()
     {
-        // Perro vuelve a su posición inicial
         perro.anchoredPosition = Vector2.MoveTowards(
             perro.anchoredPosition,
             posInicialPerro,
             velocidadPerro * Time.deltaTime
         );
+
+        // La pelota va pegada al perro, como si la llevara en la boca
+        pelota.anchoredPosition = perro.anchoredPosition;
+
         if (volverConPelota)
         {
             AudioManager.instance.PlayOneShot(FMOD_Events.instance.PerroRecogePelota, this.transform.position);
@@ -173,8 +197,6 @@ public class MinijuegoPerroSimple : MonoBehaviour
             esperarPelota = true;
             lanzarPelota = true;
         }
-        // La pelota va pegada al perro, como si la llevara en la boca
-        pelota.anchoredPosition = perro.anchoredPosition;
 
         if (Vector2.Distance(perro.anchoredPosition, posInicialPerro) < distanciaUmbral)
         {
@@ -190,9 +212,11 @@ public class MinijuegoPerroSimple : MonoBehaviour
             {
                 // Vuelta al estado de esperar -> siguiente lanzamiento
                 estadoActual = Estado.EsperandoLanzar;
+                volverConPelota = true;
             }
         }
     }
+
     void ElegirObjetivoAleatorio()
     {
         Rect r = panelArea.rect;
@@ -207,26 +231,32 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
         objetivoPelota = new Vector2(x, y);
     }
+
     void CompletarMinijuego()
     {
         minijuegoCompletado = true;
         estadoActual = Estado.Completado;
+
         if (gameManager != null)
         {
             gameManager.sliderAnsiedad.value = gameManager.sliderAnsiedad.value - 10;
         }
+
         canYouIncreaseAnxiety = false;
         StopAllCoroutines();
         pelota.gameObject.SetActive(false);
         AudioManager.instance.PlayOneShot(FMOD_Events.instance.CompletarMinijuego, this.transform.position);
 
         if (taskManager != null)
-                Debug.Log("ChangeMinigame");
+        {
+            Debug.Log("ChangeMinigame");
             taskManager.NotificarMinijuegoTerminado();
+        }
 
         gameObject.SetActive(false);
         Debug.Log("Minijuego del perro COMPLETADO (random simple)");
     }
+
     public void ResetMinijuego()
     {
         lanzamientosHechos = 0;
@@ -240,5 +270,9 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
         pelota.gameObject.SetActive(true);
         perro.gameObject.SetActive(true);
+
+        esperarPelota = true;
+        lanzarPelota = true;
+        volverConPelota = true;
     }
 }
