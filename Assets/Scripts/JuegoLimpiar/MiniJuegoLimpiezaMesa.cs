@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +23,9 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
     private int totalManchas;
     private List<float> alphasIniciales = new List<float>();
     public bool reiniciarAlpha = true;
+
+    bool canYouIncreaseAnxiety = true;
+    private bool minijuegoCompletado = false;
     void Start()
     {
         trapoPosInicial = trapo.anchoredPosition;
@@ -47,6 +51,20 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
         MoverTrapo();
         LimpiarManchas();
         ComprobarCompletado();
+        if (canYouIncreaseAnxiety && !minijuegoCompletado)
+        {
+            canYouIncreaseAnxiety = false;
+            gameManager.sliderAnsiedad.value++;
+            StartCoroutine(DelayForAnxietyIncrease());
+        }
+    }
+    IEnumerator DelayForAnxietyIncrease()
+    {
+        yield return new WaitForSeconds(1);
+        if (!minijuegoCompletado)
+        {
+            canYouIncreaseAnxiety = true;
+        }
     }
 
     void MoverTrapo()
@@ -137,9 +155,10 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
 
     void CompletarMinijuego()
     {
+        minijuegoCompletado = true;
         if (gameManager != null)
         {
-            //gameManager.ModificarAnsiedad(-10f);
+            gameManager.sliderAnsiedad.value = gameManager.sliderAnsiedad.value - 10;
         }
 
         // Opcional: resetear trapo si quieres
@@ -170,5 +189,6 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
                 }
             }
         }
+        minijuegoCompletado = false;
     }
 }

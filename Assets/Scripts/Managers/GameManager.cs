@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("Stats")]
-    public float Ansiedad = 50f;
-    public float felicidad = 50f;
     public float tiempoMax = 120f; // duración total de la partida en segundos
 
     private float tiempoRestante;
@@ -34,13 +32,11 @@ public class GameManager : MonoBehaviour
         if (sliderAnsiedad != null)
         {
             sliderAnsiedad.maxValue = 100;
-            sliderAnsiedad.value = Ansiedad;
         }
 
         if (sliderFelicidad != null)
         {
             sliderFelicidad.maxValue = 100;
-            sliderFelicidad.value = felicidad;
         }
 
         if (panelResultado != null)
@@ -62,7 +58,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Derrota por barras
-        if (Ansiedad >= 100f || felicidad <= 0f)
+        if (sliderAnsiedad.value >= 100f || sliderFelicidad.value <= 0f)
         {
             Derrota("Te ha comido la ansiedad :(");
         }
@@ -72,29 +68,12 @@ public class GameManager : MonoBehaviour
 
     void ActualizarUI()
     {
-        if (sliderAnsiedad != null)
-            sliderAnsiedad.value = Ansiedad;
-
-        if (sliderFelicidad != null)
-            sliderFelicidad.value = felicidad;
-
         if (textoTiempo != null)
         {
             int min = Mathf.FloorToInt(tiempoRestante / 60f);
             int seg = Mathf.FloorToInt(tiempoRestante % 60f);
             textoTiempo.text = $"{min:00}:{seg:00}";
         }
-    }
-
-    // Estas funciones las usan posts y minijuegos
-    public void ModificarAnsiedad(float delta)
-    {
-        Ansiedad = Mathf.Clamp(Ansiedad + delta, 0f, 100f);
-    }
-
-    public void ModificarFelicidad(float delta)
-    {
-        felicidad = Mathf.Clamp(felicidad + delta, 0f, 100f);
     }
 
     void Victoria(string mensaje)
@@ -143,7 +122,7 @@ public class GameManager : MonoBehaviour
 
     public void GetBarraFelicidad(Slider B) 
     {
-        felicidad = B.value;
+        sliderFelicidad.value = B.value;
 
     }
 }
