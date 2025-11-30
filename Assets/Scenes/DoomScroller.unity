@@ -678,7 +678,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1466980519}
   m_HandleRect: {fileID: 1466980518}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2425,6 +2425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802219765294f6c4482afb20c63ac705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelArea: {fileID: 622924572}
   pelota: {fileID: 1317263194}
   perro: {fileID: 944108707}
   gameManager: {fileID: 554954604}
@@ -2433,6 +2434,7 @@ MonoBehaviour:
   velocidadPerro: 200
   lanzamientosNecesarios: 3
   distanciaUmbral: 5
+  margenBordes: 50
 --- !u!1 &686172843
 GameObject:
   m_ObjectHideFlags: 0
@@ -4908,8 +4910,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 36, y: 35.839684}
-  m_SizeDelta: {x: 728.8457, y: 1086.3525}
+  m_AnchoredPosition: {x: 243.20659, y: -11.811}
+  m_SizeDelta: {x: 194.6017, y: 765.686}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1538801998
 MonoBehaviour:
@@ -6025,6 +6027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802219765294f6c4482afb20c63ac705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelArea: {fileID: 622924572}
   pelota: {fileID: 1317263194}
   perro: {fileID: 944108707}
   gameManager: {fileID: 554954604}
@@ -6033,6 +6036,7 @@ MonoBehaviour:
   velocidadPerro: 200
   lanzamientosNecesarios: 3
   distanciaUmbral: 5
+  margenBordes: 50
 --- !u!4 &2001901135
 Transform:
   m_ObjectHideFlags: 0
