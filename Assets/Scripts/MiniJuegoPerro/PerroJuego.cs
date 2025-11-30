@@ -38,7 +38,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
     {
         EsperandoLanzar,
         PelotaVolando,
-        PerroBuscandoPelota,       // 👉 NUEVO estado
+        PerroBuscandoPelota,       
         PerroVolviendoConPelota,
         Completado
     }
@@ -56,7 +56,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
         minijuegoCompletado = false;
 
-        // Puede ser null en PC si no tienes el asset cargado, así evitamos errores
+        
         if (InputSystem.actions != null)
             throwBall = InputSystem.actions.FindAction("Button A");
     }
@@ -80,11 +80,11 @@ public class MinijuegoPerroSimple : MonoBehaviour
                         break;
 
                     case Estado.PerroBuscandoPelota:
-                        UpdatePerroVolviendoConPelota();   // 👉 va hacia la pelota
+                        UpdatePerroVolviendoConPelota();   
                         break;
 
                     case Estado.PerroVolviendoConPelota:
-                        UpdatePerroVuelveConPelota();      // 👉 vuelve al origen con la pelota
+                        UpdatePerroVuelveConPelota();      
                         break;
 
                     case Estado.Completado:
@@ -105,7 +105,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
     IEnumerator DelayForAnxietyIncrease()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         if (!minijuegoCompletado)
         {
             canYouIncreaseAnxiety = true;
@@ -114,7 +114,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
     void UpdateEsperandoLanzar()
     {
-        // Aseguramos posiciones base
+        
         pelota.anchoredPosition = posInicialPelota;
         perro.anchoredPosition = posInicialPerro;
 
@@ -133,7 +133,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
         if (botonTeclado || botonGamepad)
         {
-            // 👉 Elegimos un destino ALEATORIO dentro del panel ANTES de lanzar
+            
             ElegirObjetivoAleatorio();
 
             estadoActual = Estado.PelotaVolando;
@@ -148,21 +148,21 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
     void UpdatePelotaHaciaObjetivo()
     {
-        // Pelota va desde el origen hacia un punto aleatorio del panel
+        
         pelota.anchoredPosition = Vector2.MoveTowards(
             pelota.anchoredPosition,
             objetivoPelota,
             velocidadPelota * Time.deltaTime
         );
 
-        // Cuando la pelota llega al objetivo, pasamos al estado en el que el perro la busca
+        
         if (Vector2.Distance(pelota.anchoredPosition, objetivoPelota) < distanciaUmbral)
         {
             estadoActual = Estado.PerroBuscandoPelota;
         }
     }
 
-    // 👉 El perro se mueve HASTA donde está la pelota
+    
     void UpdatePerroVolviendoConPelota()
     {
         perro.anchoredPosition = Vector2.MoveTowards(
@@ -173,12 +173,12 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
         if (Vector2.Distance(perro.anchoredPosition, pelota.anchoredPosition) < distanciaUmbral)
         {
-            // La ha alcanzado -> ahora toca volver al origen con ella
+            
             estadoActual = Estado.PerroVolviendoConPelota;
         }
     }
 
-    // 👉 El perro vuelve a su posición inicial llevando la pelota
+    
     void UpdatePerroVuelveConPelota()
     {
         perro.anchoredPosition = Vector2.MoveTowards(
@@ -187,7 +187,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
             velocidadPerro * Time.deltaTime
         );
 
-        // La pelota va pegada al perro, como si la llevara en la boca
+        
         pelota.anchoredPosition = perro.anchoredPosition;
 
         if (volverConPelota)
@@ -210,7 +210,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
             }
             else
             {
-                // Vuelta al estado de esperar -> siguiente lanzamiento
+                
                 estadoActual = Estado.EsperandoLanzar;
                 volverConPelota = true;
             }

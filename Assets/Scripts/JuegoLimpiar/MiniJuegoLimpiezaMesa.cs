@@ -60,7 +60,7 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
     }
     IEnumerator DelayForAnxietyIncrease()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.6f);
         if (!minijuegoCompletado)
         {
             canYouIncreaseAnxiety = true;
