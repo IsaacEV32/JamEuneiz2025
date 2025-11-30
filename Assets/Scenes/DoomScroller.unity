@@ -2107,6 +2107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiempoMax: 120
+  tiempoRestante: 0
   sliderAnsiedad: {fileID: 1519277346}
   sliderFelicidad: {fileID: 195425760}
   textoTiempo: {fileID: 0}
@@ -3258,8 +3259,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -568, y: -426}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -568, y: -386.69638}
+  m_SizeDelta: {x: 160, y: 63.294}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1050523981
 MonoBehaviour:
@@ -5321,8 +5322,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 501, y: -420}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 501, y: -374.03757}
+  m_SizeDelta: {x: 160, y: 63.294}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1709504252
 MonoBehaviour:
