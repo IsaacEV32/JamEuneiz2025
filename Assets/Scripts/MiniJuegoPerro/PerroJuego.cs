@@ -229,4 +229,18 @@ public class MinijuegoPerro : MonoBehaviour
         gameObject.SetActive(false);
         Debug.Log("Minijuego del perro COMPLETADO");
     }
+    public void ResetMinijuego()
+    {
+        atrapadas = 0;
+        minijuegoCompletado = false;
+        estadoActual = Estado.EsperandoLanzar;
+        waitForBall = true;
+        canYouIncreaseAnxiety = true;
+
+        pelota.anchoredPosition = posInicialPelota;
+        perro.anchoredPosition = posInicialPerro;
+
+        pelota.gameObject.SetActive(true);
+        perro.gameObject.SetActive(true);
+    }
 }
