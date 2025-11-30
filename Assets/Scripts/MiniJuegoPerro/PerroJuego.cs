@@ -30,11 +30,13 @@ public class MinijuegoPerro : MonoBehaviour
 
     bool waitForChange = false;
 
+    private bool minijuegoCompletado = false;
     private enum Estado
     {
         EsperandoLanzar,
         PelotaVolando,
-        PerroVolviendoConPelota
+        PerroVolviendoConPelota,
+        Completado
     }
 
     private Estado estadoActual = Estado.EsperandoLanzar;
@@ -47,12 +49,13 @@ public class MinijuegoPerro : MonoBehaviour
         posInicialPelota = pelota.anchoredPosition;
         posInicialPerro = perro.anchoredPosition;
         estadoActual = Estado.EsperandoLanzar;
+        minijuegoCompletado = false;
         throwBall = InputSystem.actions.FindAction("Button A");
     }
 
     void Update()
     {
-        if (gameObject.activeInHierarchy)
+        if (gameObject.activeInHierarchy && !minijuegoCompletado)
         {
             if (!waitForChange)
             {
@@ -75,13 +78,15 @@ public class MinijuegoPerro : MonoBehaviour
                         UpdatePerroVolviendoConPelota();
                         waitForChange = false;
                         break;
+                    case Estado.Completado:
+                        break;
                 }
             }
         }
 
         
 
-        if (canYouIncreaseAnxiety)
+        if (canYouIncreaseAnxiety && !minijuegoCompletado)
         {
             canYouIncreaseAnxiety = false;
             gameManager.ansiedad.value++;
@@ -91,7 +96,10 @@ public class MinijuegoPerro : MonoBehaviour
     IEnumerator DelayForAnxietyIncrease()
     {
         yield return new WaitForSeconds(1);
-        canYouIncreaseAnxiety = true;
+        if (!minijuegoCompletado)
+        {
+            canYouIncreaseAnxiety = true;
+        }
     }
 
     void UpdateEsperandoLanzar()
@@ -133,6 +141,8 @@ public class MinijuegoPerro : MonoBehaviour
             if (atrapadas >= atrapadasNecesarias)
             {
                 CompletarMinijuego();
+                waitForBall = true;
+                return;
             }
             else
             {
@@ -207,12 +217,15 @@ public class MinijuegoPerro : MonoBehaviour
 
     void CompletarMinijuego()
     {
+        minijuegoCompletado = true;
+        estadoActual = Estado.Completado;
         if (gameManager != null)
         {
             gameManager.ansiedad.value = gameManager.ansiedad.value - 10;
         }
         canYouIncreaseAnxiety = false;
-
+        StopAllCoroutines();
+        pelota.gameObject.SetActive(false);
         gameObject.SetActive(false);
         Debug.Log("Minijuego del perro COMPLETADO");
     }
