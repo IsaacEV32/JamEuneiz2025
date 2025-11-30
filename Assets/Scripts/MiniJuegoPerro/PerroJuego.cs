@@ -1,219 +1,136 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class MinijuegoPerro : MonoBehaviour
+public class PerroJuego : MonoBehaviour
 {
     [Header("Referencias")]
-    public RectTransform panelArea;   
     public RectTransform pelota;
     public RectTransform perro;
     public GameManager gameManager;
-
-    InputAction throwBall;
+    public TaskManager taskManager;
 
     [Header("Parámetros")]
-    public float velocidadPelota = 600f;
-    public float velocidadPerro = 500f;
-    public int atrapadasNecesarias = 3;
-    public float distanciaAtrapar = 40f; 
-    public float margenBordes = 20f;
+    public float velocidadPelota = 800f;
+    public float velocidadPerro = 700f;
+    public int lanzamientosNecesarios = 3;
+    public float distanciaUmbral = 5f;
 
     private Vector2 posInicialPelota;
     private Vector2 posInicialPerro;
-    private Vector2 velocidadPelotaActual;
-    private int atrapadas = 0;
-
-    bool waitForBall = true;
-
-    bool canYouIncreaseAnxiety = true;
-
-    bool waitForChange = false;
+    private int lanzamientosHechos = 0;
 
     private enum Estado
     {
         EsperandoLanzar,
-        PelotaVolando,
-        PerroVolviendoConPelota
+        PelotaHaciaPerro,
+        PelotaDeVuelta,
+        Terminado
     }
 
     private Estado estadoActual = Estado.EsperandoLanzar;
-
-    
-    private Vector2 offsetPelotaPerro;
 
     void Start()
     {
         posInicialPelota = pelota.anchoredPosition;
         posInicialPerro = perro.anchoredPosition;
         estadoActual = Estado.EsperandoLanzar;
-        throwBall = InputSystem.actions.FindAction("Button A");
     }
 
     void Update()
     {
-        if (gameObject.activeInHierarchy)
+        if (!gameObject.activeInHierarchy) return;
+        if (estadoActual == Estado.Terminado) return;
+
+        switch (estadoActual)
         {
-            if (!waitForChange)
-            {
-                switch (estadoActual)
-                {
-                    case Estado.EsperandoLanzar:
-                        waitForChange = true;
-                        UpdateEsperandoLanzar();
-                        waitForChange = false;
-                        break;
+            case Estado.EsperandoLanzar:
+                UpdateEsperando();
+                break;
 
-                    case Estado.PelotaVolando:
-                        waitForChange = true;
-                        UpdatePelotaVolando();
-                        waitForChange = false;
-                        break;
+            case Estado.PelotaHaciaPerro:
+                UpdatePelotaHaciaPerro();
+                break;
 
-                    case Estado.PerroVolviendoConPelota:
-                        waitForChange = true;
-                        UpdatePerroVolviendoConPelota();
-                        waitForChange = false;
-                        break;
-                }
-            }
-        }
-
-        
-
-        if (canYouIncreaseAnxiety)
-        {
-            canYouIncreaseAnxiety = false;
-            gameManager.ansiedad.value++;
-            StartCoroutine(DelayForAnxietyIncrease());
+            case Estado.PelotaDeVuelta:
+                UpdatePelotaDeVuelta();
+                break;
         }
     }
-    IEnumerator DelayForAnxietyIncrease()
-    {
-        yield return new WaitForSeconds(1);
-        canYouIncreaseAnxiety = true;
-    }
 
-    void UpdateEsperandoLanzar()
+    void UpdateEsperando()
     {
+        // Aseguramos posiciones base
         pelota.anchoredPosition = posInicialPelota;
+        perro.anchoredPosition = posInicialPerro;
 
-        
-        if (throwBall.IsPressed() && waitForBall)
+        if (lanzamientosHechos >= lanzamientosNecesarios)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            waitForBall = false;
-            LanzarPelota();
+            estadoActual = Estado.PelotaHaciaPerro;
         }
     }
 
-    void UpdatePelotaVolando()
+    void UpdatePelotaHaciaPerro()
     {
-        MoverPelotaConRebotes();
-        MoverPerroHaciaPelota();
-        ComprobarAtraparPelota();
+        // Pelota va recta al perro
+        pelota.anchoredPosition = Vector2.MoveTowards(
+            pelota.anchoredPosition,
+            perro.anchoredPosition,
+            velocidadPelota * Time.deltaTime
+        );
+
+        if (Vector2.Distance(pelota.anchoredPosition, perro.anchoredPosition) < distanciaUmbral)
+        {
+            // Cuando llega, perro empieza a volver con la pelota
+            estadoActual = Estado.PelotaDeVuelta;
+        }
     }
 
-    void UpdatePerroVolviendoConPelota()
+    void UpdatePelotaDeVuelta()
     {
-        // El perro vuelve a la zona inicial llevando la pelota
+        // Perro vuelve a su posición inicial
         perro.anchoredPosition = Vector2.MoveTowards(
             perro.anchoredPosition,
             posInicialPerro,
             velocidadPerro * Time.deltaTime
         );
 
-        
-        pelota.anchoredPosition = perro.anchoredPosition + offsetPelotaPerro;
+        // Pelota va pegada al perro, como si la llevara en la boca
+        pelota.anchoredPosition = perro.anchoredPosition;
 
-        
-        if (Vector2.Distance(perro.anchoredPosition, posInicialPerro) < 5f)
+        if (Vector2.Distance(perro.anchoredPosition, posInicialPerro) < distanciaUmbral)
         {
-            atrapadas++;
+            lanzamientosHechos++;
 
-            if (atrapadas >= atrapadasNecesarias)
+            if (lanzamientosHechos >= lanzamientosNecesarios)
             {
                 CompletarMinijuego();
             }
             else
             {
-                // para preparar el siguiente lanzamiento
-                perro.anchoredPosition = posInicialPerro;
-                pelota.anchoredPosition = posInicialPelota;
+                // Preparado para siguiente lanzamiento
                 estadoActual = Estado.EsperandoLanzar;
-                
             }
-            waitForBall = true;
-        }
-       
-
-    }
-
-    
-
-    void LanzarPelota()
-    {
-        Vector2 dir = Random.insideUnitCircle.normalized;
-        velocidadPelotaActual = dir * velocidadPelota;
-        estadoActual = Estado.PelotaVolando;
-    }
-
-    void MoverPelotaConRebotes()
-    {
-        Vector2 pos = pelota.anchoredPosition;
-        pos += velocidadPelotaActual * Time.deltaTime;
-
-        Rect r = panelArea.rect;
-
-        float minX = r.xMin + margenBordes;
-        float maxX = r.xMax - margenBordes;
-        float minY = r.yMin + margenBordes;
-        float maxY = r.yMax - margenBordes;
-
-        
-        if (pos.x < minX || pos.x > maxX)
-        {
-            pos.x = Mathf.Clamp(pos.x, minX, maxX);
-            velocidadPelotaActual.x = -velocidadPelotaActual.x;
-        }
-
-        
-        if (pos.y < minY || pos.y > maxY)
-        {
-            pos.y = Mathf.Clamp(pos.y, minY, maxY);
-            velocidadPelotaActual.y = -velocidadPelotaActual.y;
-        }
-
-        pelota.anchoredPosition = pos;
-    }
-
-    void MoverPerroHaciaPelota()
-    {
-        perro.anchoredPosition = Vector2.MoveTowards(perro.anchoredPosition,pelota.anchoredPosition,velocidadPerro * Time.deltaTime);
-    }
-
-    void ComprobarAtraparPelota()
-    {
-        float dist = Vector2.Distance(perro.anchoredPosition, pelota.anchoredPosition);
-
-        if (dist < distanciaAtrapar)
-        {
-            
-            offsetPelotaPerro = pelota.anchoredPosition - perro.anchoredPosition;
-
-            
-            estadoActual = Estado.PerroVolviendoConPelota;
         }
     }
 
     void CompletarMinijuego()
     {
+        if (estadoActual == Estado.Terminado) return;
+        estadoActual = Estado.Terminado;
+
+        // Pequeño ajuste visual: devolvemos pelota al origen
+        pelota.anchoredPosition = posInicialPelota;
+        perro.anchoredPosition = posInicialPerro;
+
         if (gameManager != null)
-        {
-            gameManager.ansiedad.value = gameManager.ansiedad.value - 10;
-        }
-        canYouIncreaseAnxiety = false;
+            //gameManager.ModificarAnsiedad(-10f);
+
+        if (taskManager != null)
+            taskManager.NotificarMinijuegoTerminado();
 
         gameObject.SetActive(false);
-        Debug.Log("Minijuego del perro COMPLETADO");
+        Debug.Log("Minijuego del perro COMPLETADO (simple)");
     }
 }
