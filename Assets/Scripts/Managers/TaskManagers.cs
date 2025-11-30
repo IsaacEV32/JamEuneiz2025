@@ -4,8 +4,9 @@ public class TaskManager : MonoBehaviour
 {
     [Header("Lista de minijuegos en orden")]
     public GameObject[] minijuegos;   // 0 = perro, 1 = mesa, etc.
+    [SerializeField]MinijuegoPerroSimple dog;
 
-    private int indiceActual = -1;
+    private int indiceActual = 0;
     private int minijuegosCompletados = 0;
 
     void Start()
@@ -18,48 +19,50 @@ public class TaskManager : MonoBehaviour
                 if (mj != null) mj.SetActive(false);
             }
         }
-
+        Debug.Log(minijuegos.Length);
         ActivarSiguienteMinijuego();
     }
 
     void ActivarSiguienteMinijuego()
     {
-        indiceActual++;
-
         if (minijuegos == null || minijuegos.Length == 0)
         {
             Debug.LogWarning("TaskManager: no hay minijuegos asignados.");
             return;
         }
-
         // Si ya hemos pasado el último, no activamos nada más
-        if (indiceActual >= minijuegos.Length)
+        if (indiceActual > minijuegos.Length - 1)
         {
+            indiceActual = 0;
+            dog.ResetMinijuego();
             Debug.Log("TaskManager: todas las tareas completadas.");
-            return;
         }
-
-        // Activar solo el minijuego actual y desactivar el resto
-        for (int i = 0; i < minijuegos.Length; i++)
+        if (indiceActual > 0)
         {
-            if (minijuegos[i] != null)
-                minijuegos[i].SetActive(i == indiceActual);
+            Debug.Log("Entre aqui");
+            for (int i = 0; i < minijuegos.Length; i++)
+            {
+                minijuegos[i].SetActive(false);
+            }
+            minijuegos[indiceActual].SetActive(true);
         }
-
+        else
+        {
+            minijuegos[indiceActual].SetActive(true);
+        }
+            
         Debug.Log("TaskManager: activando minijuego " + minijuegos[indiceActual].name);
     }
 
     // Llamado por los minijuegos cuando terminan
     public void NotificarMinijuegoTerminado()
     {
-        minijuegosCompletados++;
+        indiceActual++;
         Debug.Log("TaskManager: minijuego terminado. Completados = " + minijuegosCompletados);
         ActivarSiguienteMinijuego();
     }
-
-    public bool TodasLasTareasCompletadas()
+    public void GetPerro(MinijuegoPerroSimple p)
     {
-        if (minijuegos == null) return false;
-        return minijuegosCompletados >= minijuegos.Length;
+        dog = p;
     }
 }

@@ -45,7 +45,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
         posInicialPelota = pelota.anchoredPosition;
         posInicialPerro = perro.anchoredPosition;
         estadoActual = Estado.EsperandoLanzar;
-
+        taskManager.GetPerro(this);
         minijuegoCompletado = false;
         throwBall = InputSystem.actions.FindAction("Button A");
     }

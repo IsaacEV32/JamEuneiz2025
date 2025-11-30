@@ -67,12 +67,6 @@ public class GameManager : MonoBehaviour
             Derrota("Te ha comido la ansiedad :(");
         }
 
-        // Victoria por haber completado TODAS las tareas
-        if (taskManager != null && taskManager.TodasLasTareasCompletadas())
-        {
-            Victoria("¡Has completado todas las tareas!");
-        }
-
         ActualizarUI();
     }
 
