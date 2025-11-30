@@ -29,6 +29,10 @@ public class MinijuegoPerroSimple : MonoBehaviour
     bool canYouIncreaseAnxiety = true;
     bool waitForBall;
 
+    bool esperarPelota = true;
+    bool lanzarPelota = true;
+    bool volverConPelota = true;
+
 
     private enum Estado
     {
@@ -104,11 +108,23 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
         if (lanzamientosHechos >= lanzamientosNecesarios)
             return;
+        if (esperarPelota)
+        {
+            volverConPelota = false;
+            AudioManager.instance.PlayOneShot(FMOD_Events.instance.LadridoPerro, this.transform.position);
+            esperarPelota = false;
+        }
+        
 
         if (Input.GetKeyDown(KeyCode.Space) || throwBall.IsPressed())
         {
 
             estadoActual = Estado.PelotaVolando;
+            if (lanzarPelota)
+            {
+                AudioManager.instance.PlayOneShot(FMOD_Events.instance.LanzarPelota, this.transform.position);
+                lanzarPelota = false;
+            }
         }
     }
     void UpdatePelotaHaciaObjetivo()
@@ -150,7 +166,13 @@ public class MinijuegoPerroSimple : MonoBehaviour
             posInicialPerro,
             velocidadPerro * Time.deltaTime
         );
-
+        if (volverConPelota)
+        {
+            AudioManager.instance.PlayOneShot(FMOD_Events.instance.PerroRecogePelota, this.transform.position);
+            volverConPelota = false;
+            esperarPelota = true;
+            lanzarPelota = true;
+        }
         // La pelota va pegada al perro, como si la llevara en la boca
         pelota.anchoredPosition = perro.anchoredPosition;
 
