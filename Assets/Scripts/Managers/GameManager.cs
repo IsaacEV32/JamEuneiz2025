@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
         if (sliderAnsiedad.value >= 100f || sliderFelicidad.value <= 0f)
         {
             Derrota("Te ha comido la ansiedad :(");
+            AudioManager.instance.PlayOneShot(FMOD_Events.instance.FullOfAnxiety, this.transform.position);
         }
 
         ActualizarUI();

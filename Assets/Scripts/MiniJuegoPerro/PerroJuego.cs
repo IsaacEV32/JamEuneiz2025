@@ -218,9 +218,9 @@ public class MinijuegoPerroSimple : MonoBehaviour
         canYouIncreaseAnxiety = false;
         StopAllCoroutines();
         pelota.gameObject.SetActive(false);
+        AudioManager.instance.PlayOneShot(FMOD_Events.instance.CompletarMinijuego, this.transform.position);
 
-
-            if (taskManager != null)
+        if (taskManager != null)
                 Debug.Log("ChangeMinigame");
             taskManager.NotificarMinijuegoTerminado();
 
