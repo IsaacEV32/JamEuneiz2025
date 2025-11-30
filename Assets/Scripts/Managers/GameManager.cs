@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     [Header("Stats")]
     public float tiempoMax = 120f; // duración total de la partida en segundos
 
-    private float tiempoRestante;
+    public float tiempoRestante;
     private bool juegoTerminado = false;
 
     [Header("UI barras y tiempo")]
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
 
         if (panelResultado != null)
             panelResultado.SetActive(false);
-
+        AudioManager.instance.InitializeMusic(FMOD_Events.instance.GameplayMusic);
         ActualizarUI();
     }
 
@@ -55,13 +55,14 @@ public class GameManager : MonoBehaviour
         {
             tiempoRestante = 0f;
             Victoria("Has sobrevivido al doomscroll");
+            
         }
 
         // Derrota por barras
         if (sliderAnsiedad.value >= 100f || sliderFelicidad.value <= 0f)
         {
             Derrota("Te ha comido la ansiedad :(");
-            AudioManager.instance.PlayOneShot(FMOD_Events.instance.FullOfAnxiety, this.transform.position);
+            
         }
 
         ActualizarUI();
@@ -84,10 +85,10 @@ public class GameManager : MonoBehaviour
 
         if (panelResultado != null)
             panelResultado.SetActive(true);
-
+        AudioManager.instance.StopMusic();
         if (textoResultado != null)
             textoResultado.text = mensaje;
-
+        AudioManager.instance.PlayOneShot(FMOD_Events.instance.OutOfBattery, this.transform.position);
         Time.timeScale = 0f;
         Debug.Log("VICTORIA: " + mensaje);
     }
@@ -99,10 +100,10 @@ public class GameManager : MonoBehaviour
 
         if (panelResultado != null)
             panelResultado.SetActive(true);
-
+        AudioManager.instance.StopMusic();
         if (textoResultado != null)
             textoResultado.text = mensaje;
-
+        AudioManager.instance.PlayOneShot(FMOD_Events.instance.FullOfAnxiety, this.transform.position);
         Time.timeScale = 0f;
         Debug.Log("DERROTA: " + mensaje);
     }
