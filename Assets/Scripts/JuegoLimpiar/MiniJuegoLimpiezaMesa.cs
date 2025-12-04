@@ -24,6 +24,8 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
     private List<float> alphasIniciales = new List<float>();
     public bool reiniciarAlpha = true;
 
+    bool estaLimpiando = false;
+    bool limpiando = false;
     bool canYouIncreaseAnxiety = true;
     private bool minijuegoCompletado = false;
     void Start()
@@ -43,6 +45,10 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
             }
         }
     }
+    private void OnEnable()
+    {
+        RestartMesa();
+    }
 
     void Update()
     {
@@ -60,7 +66,7 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
     }
     IEnumerator DelayForAnxietyIncrease()
     {
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1f);
         if (!minijuegoCompletado)
         {
             canYouIncreaseAnxiety = true;
@@ -94,6 +100,7 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
 
     void LimpiarManchas()
     {
+        estaLimpiando = false;
         foreach (Image mancha in manchas)
         {
             if (mancha == null) continue; 
@@ -104,20 +111,27 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
 
             if (dist < radioLimpieza)
             {
-                
+                estaLimpiando = true;
                 Color c = mancha.color;
                 c.a -= velocidadLimpieza * Time.deltaTime;
                 c.a = Mathf.Clamp01(c.a);
                 mancha.color = c;
-               
-                
+                if (!limpiando && c.a > 0.05f && !minijuegoCompletado)
+                {
+                    AudioManager.instance.PlayOneShot(FMOD_Events.instance.PasarToalla, this.transform.position);
+                    limpiando = true;
+                }
                 if (c.a <= 0.05f)
                 {
-                    //AudioManager.instance.PlayOneShot(FMOD_Events.instance.PasarToalla, this.transform.position);
+                    
                     mancha.gameObject.SetActive(false);
                     break;
                 }
             }
+        }
+        if(!estaLimpiando && limpiando)
+        {
+            limpiando = false;
         }
     }
 
@@ -146,25 +160,26 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
 
         float porcentajeLimpio = (limpiezaTotal / totalManchas) * 100f;
 
-        Debug.Log($"Limpieza total: {limpiezaTotal}/{totalManchas}, Porcentaje: {porcentajeLimpio}%");
-
         if (porcentajeLimpio >= porcentajeNecesario)
         {
             CompletarMinijuego();
+            return;
         }
     }
 
     void CompletarMinijuego()
     {
+        canYouIncreaseAnxiety = false;
         minijuegoCompletado = true;
+        limpiando = false;
         if (gameManager != null)
         {
             gameManager.sliderAnsiedad.value = gameManager.sliderAnsiedad.value - 10;
         }
         AudioManager.instance.PlayOneShot(FMOD_Events.instance.CompletarMinijuego, this.transform.position);
+        StopAllCoroutines();
         // Opcional: resetear trapo si quieres
         trapo.anchoredPosition = trapoPosInicial;
-
         // Avisar al TaskManager
         if (taskManager != null)
         {
@@ -172,8 +187,6 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
         }
 
         gameObject.SetActive(false);
-        RestartMesa();
-        Debug.Log("Minijuego de limpiar mesa COMPLETADO");
     }
     public void RestartMesa()
     {
@@ -191,5 +204,7 @@ public class MinijuegoLimpiezaMesa : MonoBehaviour
             }
         }
         minijuegoCompletado = false;
+        canYouIncreaseAnxiety = true;
+        limpiando = false;
     }
 }

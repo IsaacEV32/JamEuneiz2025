@@ -30,9 +30,9 @@ public class MinijuegoPerroSimple : MonoBehaviour
     bool canYouIncreaseAnxiety = true;
     bool waitForBall;
 
-    bool esperarPelota = true;
-    bool lanzarPelota = true;
-    bool volverConPelota = true;
+    bool esperarPelota = false;
+    bool lanzarPelota = false;
+    bool volverConPelota = false;
 
     private enum Estado
     {
@@ -105,7 +105,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
     IEnumerator DelayForAnxietyIncrease()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         if (!minijuegoCompletado)
         {
             canYouIncreaseAnxiety = true;
@@ -121,11 +121,10 @@ public class MinijuegoPerroSimple : MonoBehaviour
         if (lanzamientosHechos >= lanzamientosNecesarios)
             return;
 
-        if (esperarPelota)
+        if (!esperarPelota)
         {
-            volverConPelota = false;
             AudioManager.instance.PlayOneShot(FMOD_Events.instance.LadridoPerro, this.transform.position);
-            esperarPelota = false;
+            esperarPelota = true;
         }
 
         bool botonTeclado = Input.GetKeyDown(KeyCode.Space);
@@ -138,10 +137,10 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
             estadoActual = Estado.PelotaVolando;
 
-            if (lanzarPelota)
+            if (!lanzarPelota)
             {
                 AudioManager.instance.PlayOneShot(FMOD_Events.instance.LanzarPelota, this.transform.position);
-                lanzarPelota = false;
+                lanzarPelota = true;
             }
         }
     }
@@ -170,7 +169,6 @@ public class MinijuegoPerroSimple : MonoBehaviour
             pelota.anchoredPosition,
             velocidadPerro * Time.deltaTime
         );
-
         if (Vector2.Distance(perro.anchoredPosition, pelota.anchoredPosition) < distanciaUmbral)
         {
             
@@ -186,22 +184,20 @@ public class MinijuegoPerroSimple : MonoBehaviour
             posInicialPerro,
             velocidadPerro * Time.deltaTime
         );
-
-        
-        pelota.anchoredPosition = perro.anchoredPosition;
-
-        if (volverConPelota)
+        if (!volverConPelota)
         {
             AudioManager.instance.PlayOneShot(FMOD_Events.instance.PerroRecogePelota, this.transform.position);
-            volverConPelota = false;
-            esperarPelota = true;
-            lanzarPelota = true;
+            volverConPelota = true;
         }
+
+        pelota.anchoredPosition = perro.anchoredPosition;
 
         if (Vector2.Distance(perro.anchoredPosition, posInicialPerro) < distanciaUmbral)
         {
             lanzamientosHechos++;
-
+            esperarPelota = false;
+            lanzarPelota = false;
+            volverConPelota = false;
             if (lanzamientosHechos >= lanzamientosNecesarios)
             {
                 CompletarMinijuego();
@@ -271,8 +267,8 @@ public class MinijuegoPerroSimple : MonoBehaviour
         pelota.gameObject.SetActive(true);
         perro.gameObject.SetActive(true);
 
-        esperarPelota = true;
-        lanzarPelota = true;
-        volverConPelota = true;
+        esperarPelota = false;
+        lanzarPelota = false;
+        volverConPelota = false;
     }
 }

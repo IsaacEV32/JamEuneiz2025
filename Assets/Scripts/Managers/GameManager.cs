@@ -113,6 +113,8 @@ public class GameManager : MonoBehaviour
     // Botones del PanelResultado
     public void Reintentar()
     {
+        AudioManager.instance.StopMusic();
+        AudioManager.instance.PlayOneShot(FMOD_Events.instance.ConfirmButton, this.transform.position);
         Time.timeScale = 1f;
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
@@ -120,6 +122,8 @@ public class GameManager : MonoBehaviour
 
     public void VolverAlMenu()
     {
+        AudioManager.instance.StopMusic();
+        AudioManager.instance.PlayOneShot(FMOD_Events.instance.ConfirmButton, this.transform.position);
         Time.timeScale = 1f;
         SceneManager.LoadScene("Menu"); // pon aquí el nombre EXACTO de tu escena de menú
     }
