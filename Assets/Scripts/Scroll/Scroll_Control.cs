@@ -104,5 +104,6 @@ public class Scroll_Control : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         delayForPressScroll = true;
+        maxHappy = true;
     }
 }
