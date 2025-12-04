@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public enum TipoPosts
 {
@@ -15,13 +16,15 @@ public class Posts : MonoBehaviour
     float numRandom = 0;
     float numRandomPost = 0;
     [SerializeField] Scroll_Control scrollControl;
+
+    Vector3 actualPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         scrollControl.GetThisPost(this);
         numRandom = Random.value;
         float roundedValue = Mathf.Round(numRandom * 10f) / 10f;
-
+        actualPosition = this.transform.position;
         Debug.Log(roundedValue);
         if (numRandom <= 0.5f)
         {
@@ -60,9 +63,35 @@ public class Posts : MonoBehaviour
             }
         }
     }
-    
+    IEnumerator AnimacionSubirYBajar()
+    {
+        float duracion = 0.5f;
+        Vector3 posicionArriba = actualPosition + Vector3.up * 100f; // Ajusta la altura
+
+        // Subir
+        float tiempo = 0f;
+        while (tiempo < duracion / 2)
+        {
+            tiempo += Time.deltaTime;
+            transform.position = Vector3.Lerp(actualPosition, posicionArriba, tiempo / (duracion / 2));
+            yield return null;
+        }
+
+        // Bajar
+        tiempo = 0f;
+        while (tiempo < duracion / 2)
+        {
+            tiempo += Time.deltaTime;
+            transform.position = Vector3.Lerp(posicionArriba, actualPosition, tiempo / (duracion / 2));
+            yield return null;
+        }
+
+        transform.position = actualPosition; // Asegurar posición exacta
+    }
+
     internal void ChangeTipe()
     {
+        StartCoroutine(AnimacionSubirYBajar());
         numRandom = Random.value;
         float roundedValue = Mathf.Round(numRandom * 10f) / 10f;
         Debug.Log(roundedValue);
