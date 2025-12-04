@@ -75,7 +75,7 @@ public class Scroll_Control : MonoBehaviour
             }
         }
         //Sirve para controlar el input del jugador
-        if (scrollController.IsPressed())
+        if (scrollController.IsPressed() || Input.GetKeyDown(KeyCode.J))
         {
             //Se cambiará de posts
             if (delayForPressScroll)

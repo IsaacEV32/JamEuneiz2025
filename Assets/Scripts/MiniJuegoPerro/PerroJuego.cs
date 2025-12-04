@@ -105,7 +105,7 @@ public class MinijuegoPerroSimple : MonoBehaviour
 
     IEnumerator DelayForAnxietyIncrease()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         if (!minijuegoCompletado)
         {
             canYouIncreaseAnxiety = true;
