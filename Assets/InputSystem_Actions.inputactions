@@ -32,6 +32,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "MenuPausa",
+                    "type": "Button",
+                    "id": "dc8c74ed-16a1-4a62-95c7-c7344f82b970",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -65,6 +74,17 @@
                     "processors": "",
                     "groups": ";Gamepad;Touch",
                     "action": "ChoresController",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d44eec5-1713-4f23-8b9c-aa78611e1ef6",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MenuPausa",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

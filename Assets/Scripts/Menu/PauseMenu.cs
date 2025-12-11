@@ -1,27 +1,39 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pausePanel;
-
+    InputAction action;
     private bool isPaused = false;
+    [SerializeField]Button p;
+    [SerializeField] Button b;
+    bool isSelected = false;
+    [SerializeField]GameManager gameManager;
 
     void Start()
     {
         if (pausePanel != null)
             pausePanel.SetActive(false);
-
+        action = InputSystem.actions.FindAction("MenuPausa");
         Time.timeScale = 1f;
     }
-
+    private void OnEnable()
+    {
+        p.Select();
+    }
     void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (gameManager.tiempoRestante > 0 && gameManager.sliderAnsiedad.value < 100 && gameManager.sliderFelicidad.value > 0)
         {
-            TogglePause();
+            if (Input.GetKeyDown(KeyCode.Escape) || action.WasPressedThisFrame())
+            {
+                TogglePause();
+            }
         }
+        
     }
 
     public void TogglePause()
@@ -36,6 +48,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (pausePanel != null)
             pausePanel.SetActive(true);
+        
 
         Time.timeScale = 0f;
         isPaused = true;

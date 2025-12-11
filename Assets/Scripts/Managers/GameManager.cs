@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     [Header("Referencias")]
     public TaskManager taskManager;   // <--- arrastra aquí tu TaskManager en el Inspector
 
+    [SerializeField] Button l;
+    [SerializeField] Button w;
+
     void Start()
     {
         Time.timeScale = 1f;
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour
 
         if (panelResultado != null)
             panelResultado.SetActive(true);
+            w.Select();
         AudioManager.instance.StopMusic();
         if (textoResultado != null)
             textoResultado.text = mensaje;
@@ -102,6 +106,7 @@ public class GameManager : MonoBehaviour
 
         if (panelResultado != null)
             GameOver.SetActive(true);
+            l.Select();
         AudioManager.instance.StopMusic();
         if (textoResultado != null)
             textoResultado.text = mensaje;

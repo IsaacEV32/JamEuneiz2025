@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.InputSystem;
 public class MainMenu : MonoBehaviour
 {
+    InputActionMap menuController;
     private void Start()
     {
         Debug.Log("Hello");
         AudioManager.instance.InitializeMusic(FMOD_Events.instance.MainMenuMusic);
+        menuController = InputSystem.actions.FindActionMap("UI");
     }
     public void Jugar()
     {
